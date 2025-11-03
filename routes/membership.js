@@ -1,7 +1,10 @@
+const { nanoid } = require('nanoid');
 let express = require('express');
 let router = express.Router();
+const pool = require('./db.js');
 
-router.post('/registration', (req, res, next) => {
+router.post('/registration', async (req, res, next) => {
+  const id = `user-${nanoid(16)}`;
   const { email, first_name, last_name, password } = req.body;
 
   const requiredFields = { email, first_name, last_name, password };
@@ -25,7 +28,18 @@ router.post('/registration', (req, res, next) => {
     return res.status(400).json({ status: 102, message: 'Password length minimal 8 karakter', data: null });
   }
 
-  res.status(201).json({ status: 0, message: 'Registrasi berhasil silahkan login', data: null });
+  try {
+    const query = {
+      text: 'INSERT INTO users (id, email, first_name, last_name, password) VALUES ($1, $2, $3, $4, $5)',
+      values: [id, email, first_name, last_name, password],
+    };
+
+    await pool.query(query);
+    res.status(201).json({ status: 0, message: 'Registrasi berhasil silahkan login', data: null });
+  } catch (err) {
+    console.log('catch block');
+    res.status(500).json({ status: 102, message: err.message, data: null });
+  }
 });
 
 module.exports = router;
