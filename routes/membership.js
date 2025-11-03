@@ -4,9 +4,25 @@ let router = express.Router();
 router.post('/registration', (req, res, next) => {
   const { email, first_name, last_name, password } = req.body;
 
+  const requiredFields = { email, first_name, last_name, password };
+
+  for (const [key, value] of Object.entries(requiredFields)) {
+    if (!value) {
+      return res.status(400).json({ 
+        status: 102, 
+        message: `Parameter ${key} harus di isi`, 
+        data: null 
+      });  
+    }
+  }
+
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(email)) {
     return res.status(400).json({ status: 102, message: 'Paramter email tidak sesuai format', data: null });
+  }
+
+  if (password.length < 8) {
+    return res.status(400).json({ status: 102, message: 'Password length minimal 8 karakter', data: null });
   }
 
   res.status(201).json({ status: 0, message: 'Registrasi berhasil silahkan login', data: null });
