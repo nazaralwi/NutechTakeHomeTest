@@ -5,6 +5,7 @@ node_modules/
 .env
 .env.local
 .env.*.local
+.prod.env
 
 # Logs
 logs
@@ -31,8 +32,8 @@ build/
 .cache/
 .tmp/
 
-# Dependency locks (optional, jika tidak ingin commit lockfile)
-# package-lock.json
+# Dependency locks
+package-lock.json
 # yarn.lock
 
 # PM2 process logs
