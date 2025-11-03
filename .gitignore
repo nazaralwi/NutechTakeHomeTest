@@ -1,0 +1,44 @@
+# Node modules
+node_modules/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+
+# Coverage / testing
+coverage/
+*.lcov
+
+# Build artifacts
+dist/
+build/
+.cache/
+.tmp/
+
+# Dependency locks (optional, jika tidak ingin commit lockfile)
+# package-lock.json
+# yarn.lock
+
+# PM2 process logs
+pids/
+*.pid
+*.seed
+
+# Misc
+*.tgz
