@@ -1,4 +1,5 @@
 const { nanoid } = require('nanoid');
+const bcrypt = require('bcrypt');
 let express = require('express');
 let router = express.Router();
 const pool = require('./db.js');
@@ -28,10 +29,12 @@ router.post('/registration', async (req, res, next) => {
     return res.status(400).json({ status: 102, message: 'Password length minimal 8 karakter', data: null });
   }
 
+  const hashedPassword = await bcrypt.hash(password, 10);
+
   try {
     const query = {
       text: 'INSERT INTO users (id, email, first_name, last_name, password) VALUES ($1, $2, $3, $4, $5)',
-      values: [id, email, first_name, last_name, password],
+      values: [id, email, first_name, last_name, hashedPassword],
     };
 
     await pool.query(query);
