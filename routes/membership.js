@@ -1,6 +1,9 @@
 const { nanoid } = require('nanoid');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
 let express = require('express');
 let router = express.Router();
 const pool = require('./db.js');
@@ -17,6 +20,41 @@ async function isUserExist(email) {
 
   return result.rowCount > 0;
 }
+
+const uploadDir = path.join(process.cwd(), 'uploads');
+
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, uploadDir);
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    const ext = path.extname(file.originalname);
+    cb(null, file.fieldname + '-' + uniqueSuffix + ext);
+  }
+});
+
+const fileFilter = (req, file, cb) => {
+  const allowedTypes = /jpeg|png/;
+  const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
+  const mimetype = allowedTypes.test(file.mimetype);
+
+  if (extname && mimetype) {
+    cb(null, true);
+  } else {
+    cb(new Error('Format Image tidak sesuai'));
+  }
+};
+
+const upload = multer({
+  storage,
+  limits: { fileSize: 5 * 1024 * 1024 },
+  fileFilter,
+});
 
 router.post('/registration', async (req, res, next) => {
   const id = `user-${nanoid(16)}`;
@@ -227,6 +265,88 @@ router.put('/profile/update', async (req, res, next) => {
       data: null,
     });
   }
+});
+
+router.put('/profile/image', (req, res, next) => {
+  upload.single('file')(req, res, async (err) => {
+    try {
+      if (err instanceof multer.MulterError) {
+        return res.status(400).json({
+          status: 102,
+          message: err.message,
+          data: null,
+        });
+      } else if (err) {
+        return res.status(400).json({
+          status: 102,
+          message: err.message,
+          data: null,
+        });
+      }
+
+      if (!req.file) {
+        return res.status(400).json({
+          status: 102,
+          message: 'File tidak ditemukan',
+          data: null,
+        });
+      }
+
+      const imagePath = req.file.path;
+      const imageFileName = imagePath.split('/')[1];
+
+      const authHeader = req.headers.authorization;
+
+      const token = authHeader.split(' ')[1];
+
+      let decoded;
+      try {
+        decoded = jwt.verify(token, process.env.JWT_SECRET);
+      } catch (err) {
+        return res.status(401).json({
+          status: 108,
+          message: 'Token tidak tidak valid atau kadaluwarsa',
+          data: null,
+        });
+      }
+
+      console.log('decoded ' + decoded);
+      const { email } = decoded;
+
+      const query = {
+        text: 'UPDATE users SET profile_image = $1 WHERE email = $2 RETURNING email, first_name, last_name, profile_image',
+        values: [imageFileName, email],
+      };
+
+      const result = await pool.query(query);
+
+      if (result.rowCount === 0) {
+        return res.status(404).json({
+          status: 105,
+          message: 'User tidak ditemukan',
+          data: null,
+        });
+      }
+      const user = result.rows[0];
+
+      res.status(200).json({
+        status: 0,
+        message: 'Update Profile Image berhasil',
+        data: {
+          email: user.email,
+          first_name: user.first_name,
+          last_name: user.last_name,
+          profile_image: `http://${process.env.HOST}:${process.env.PORT}/${user.profile_image}`,
+        },
+      });
+    } catch (err) {
+      res.status(500).json({
+        status: 102,
+        message: err.message,
+        data: null,
+      });
+    }
+  });
 });
 
 
