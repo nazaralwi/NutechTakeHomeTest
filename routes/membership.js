@@ -4,6 +4,19 @@ let express = require('express');
 let router = express.Router();
 const pool = require('./db.js');
 
+async function isUserExist(email) {
+  const query = {
+    text: 'SELECT * FROM users WHERE email = $1',
+    values: [email],
+  };
+
+  const result = await pool.query(query);
+
+  console.log('users rowCount ' + result.rowCount);
+
+  return result.rowCount > 0;
+}
+
 router.post('/registration', async (req, res, next) => {
   const id = `user-${nanoid(16)}`;
   const { email, first_name, last_name, password } = req.body;
@@ -32,6 +45,10 @@ router.post('/registration', async (req, res, next) => {
   const hashedPassword = await bcrypt.hash(password, 10);
 
   try {
+    if (await isUserExist(email)) {
+      return res.status(400).json({ status: 102, message: 'Email sudah terdaftar', data: null });
+    }
+
     const query = {
       text: 'INSERT INTO users (id, email, first_name, last_name, password) VALUES ($1, $2, $3, $4, $5)',
       values: [id, email, first_name, last_name, hashedPassword],
