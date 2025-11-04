@@ -9,6 +9,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 let membershipRouter = require('./routes/membership');
 let informationRouter = require('./routes/information');
+let transactionRouter = require('./routes/transaction');
 
 var app = express();
 
@@ -26,6 +27,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/', membershipRouter);
 app.use('/', informationRouter);
+app.use('/', transactionRouter);
 
 app.use('/', express.static(path.join(process.cwd(), 'uploads')));
 

@@ -43,3 +43,6 @@ pids/
 
 # Misc
 *.tgz
+
+# Ignore all files inside uploads folder
+uploads/
