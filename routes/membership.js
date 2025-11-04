@@ -349,5 +349,4 @@ router.put('/profile/image', (req, res, next) => {
   });
 });
 
-
 module.exports = router;
