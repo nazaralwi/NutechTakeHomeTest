@@ -1,5 +1,6 @@
 const { nanoid } = require('nanoid');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 let express = require('express');
 let router = express.Router();
 const pool = require('./db.js');
@@ -25,11 +26,11 @@ router.post('/registration', async (req, res, next) => {
 
   for (const [key, value] of Object.entries(requiredFields)) {
     if (!value) {
-      return res.status(400).json({ 
-        status: 102, 
-        message: `Parameter ${key} harus di isi`, 
-        data: null 
-      });  
+      return res.status(400).json({
+        status: 102,
+        message: `Parameter ${key} harus di isi`,
+        data: null
+      });
     }
   }
 
@@ -68,11 +69,11 @@ router.post('/login', async (req, res, next) => {
 
   for (const [key, value] of Object.entries(requiredFields)) {
     if (!value) {
-      return res.status(400).json({ 
-        status: 102, 
-        message: `Parameter ${key} harus di isi`, 
-        data: null 
-      });  
+      return res.status(400).json({
+        status: 102,
+        message: `Parameter ${key} harus di isi`,
+        data: null
+      });
     }
   }
 
@@ -86,6 +87,10 @@ router.post('/login', async (req, res, next) => {
   }
 
   try {
+    if (!(await isUserExist(email))) {
+      return res.status(400).json({ status: 103, message: 'Email tidak terdaftar', data: null });
+    }
+
     const query = {
       text: 'SELECT * FROM users WHERE email = $1',
       values: [email],
@@ -94,7 +99,7 @@ router.post('/login', async (req, res, next) => {
     const users = await pool.query(query);
 
     if (!users.rows.length) {
-      return res.status(401).json({ status: 103, message: 'Username atau password salah', data: null });  
+      return res.status(401).json({ status: 103, message: 'Username atau password salah', data: null });
     }
 
     const user = users.rows[0];
@@ -103,7 +108,12 @@ router.post('/login', async (req, res, next) => {
       return res.status(401).json({ status: 103, message: 'Username atau password salah', data: null });
     }
 
-    res.status(200).json({ status: 0, message: 'Login Sukses', data: { token: "this_should_be_token" } });  
+    const payload = { email: user.email };
+    const token = jwt.sign(payload, process.env.JWT_SECRET, {
+      expiresIn: process.env.JWT_EXPIRES_IN || '1h',
+    });
+
+    res.status(200).json({ status: 0, message: 'Login Sukses', data: { token } });
   } catch (err) {
     res.status(500).json({ status: 102, message: err.message, data: null });
   }
