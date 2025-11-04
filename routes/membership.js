@@ -173,4 +173,61 @@ router.get('/profile', async (req, res, next) => {
   }
 });
 
+router.put('/profile/update', async (req, res, next) => {
+  try {
+    const { first_name, last_name } = req.body;
+    const authHeader = req.headers.authorization;
+
+    const token = authHeader.split(' ')[1];
+
+    let decoded;
+    try {
+      decoded = jwt.verify(token, process.env.JWT_SECRET);
+    } catch (err) {
+      return res.status(401).json({
+        status: 108,
+        message: 'Token tidak tidak valid atau kadaluwarsa',
+        data: null,
+      });
+    }
+
+    console.log('decoded ' + decoded);
+    const { email } = decoded;
+
+    const query = {
+      text: 'UPDATE users SET first_name = $1, last_name = $2 WHERE email = $3 RETURNING email, first_name, last_name, profile_image',
+      values: [first_name, last_name, email],
+    };
+
+    const result = await pool.query(query);
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({
+        status: 105,
+        message: 'User tidak ditemukan',
+        data: null,
+      });
+    }
+    const user = result.rows[0];
+
+    res.status(200).json({
+      status: 0,
+      message: 'Update Pofile berhasil',
+      data: {
+        email: user.email,
+        first_name: user.first_name,
+        last_name: user.last_name,
+        profile_image: user.profile_image,
+      },
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: 102,
+      message: err.message,
+      data: null,
+    });
+  }
+});
+
+
 module.exports = router;
