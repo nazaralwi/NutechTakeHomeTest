@@ -1,0 +1,3449 @@
+{
+	"info": {
+		"_postman_id": "75902b50-5841-4b93-ab43-07066452f74a",
+		"name": "PPOB API Test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "29988340"
+	},
+	"item": [
+		{
+			"name": "Registration",
+			"item": [
+				{
+					"name": "[No test] Prerequisite",
+					"item": [
+						{
+							"name": "Reset Database",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-internal-secret",
+										"value": "{{internalKey}}",
+										"type": "text"
+									}
+								],
+								"url": "http://localhost:{{port}}/internal/reset"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Register with Empty Email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response 400 status code', () => {",
+									"    pm.expect(pm.response).to.have.status(400);",
+									"});",
+									"",
+									"pm.test('response Content-Type header should have application/json value', () => {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');",
+									"});",
+									"",
+									"pm.test('response body should an object', () => {",
+									"    const responseJSON = pm.response.json();",
+									"    pm.expect(responseJSON).to.be.an('object');",
+									"});",
+									"",
+									"pm.test('response body should have correct propery and value', () => {",
+									"    const responseJSON = pm.response.json();",
+									"",
+									"    pm.expect(responseJSON.status).to.equal(102);",
+									"    pm.expect(responseJSON.message).to.equal('Parameter email harus di isi');",
+									"    pm.expect(responseJSON.data).to.equal(null);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"\",\n  \"first_name\": \"Nazar\",\n  \"last_name\": \"Alwi\",\n  \"password\": \"abcdef1234\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:{{port}}/registration"
+					},
+					"response": []
+				},
+				{
+					"name": "Register with Empty First Name",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response 400 status code', () => {",
+									"    pm.expect(pm.response).to.have.status(400);",
+									"});",
+									"",
+									"pm.test('response Content-Type header should have application/json value', () => {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');",
+									"});",
+									"",
+									"pm.test('response body should an object', () => {",
+									"    const responseJSON = pm.response.json();",
+									"    pm.expect(responseJSON).to.be.an('object');",
+									"});",
+									"",
+									"pm.test('response body should have correct propery and value', () => {",
+									"    const responseJSON = pm.response.json();",
+									"",
+									"    pm.expect(responseJSON.status).to.equal(102);",
+									"    pm.expect(responseJSON.message).to.equal('Parameter first_name harus di isi');",
+									"    pm.expect(responseJSON.data).to.equal(null);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"nazar@email.com\",\n  \"first_name\": \"\",\n  \"last_name\": \"Alwi\",\n  \"password\": \"abcdef1234\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:{{port}}/registration"
+					},
+					"response": []
+				},
+				{
+					"name": "Register with Empty Last Name",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response 400 status code', () => {",
+									"    pm.expect(pm.response).to.have.status(400);",
+									"});",
+									"",
+									"pm.test('response Content-Type header should have application/json value', () => {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');",
+									"});",
+									"",
+									"pm.test('response body should an object', () => {",
+									"    const responseJSON = pm.response.json();",
+									"    pm.expect(responseJSON).to.be.an('object');",
+									"});",
+									"",
+									"pm.test('response body should have correct propery and value', () => {",
+									"    const responseJSON = pm.response.json();",
+									"",
+									"    pm.expect(responseJSON.status).to.equal(102);",
+									"    pm.expect(responseJSON.message).to.equal('Parameter last_name harus di isi');",
+									"    pm.expect(responseJSON.data).to.equal(null);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"nazar@email.com\",\n  \"first_name\": \"Nazar\",\n  \"last_name\": \"\",\n  \"password\": \"abcdef1234\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:{{port}}/registration"
+					},
+					"response": []
+				},
+				{
+					"name": "Register with Empty Password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response 400 status code', () => {",
+									"    pm.expect(pm.response).to.have.status(400);",
+									"});",
+									"",
+									"pm.test('response Content-Type header should have application/json value', () => {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');",
+									"});",
+									"",
+									"pm.test('response body should an object', () => {",
+									"    const responseJSON = pm.response.json();",
+									"    pm.expect(responseJSON).to.be.an('object');",
+									"});",
+									"",
+									"pm.test('response body should have correct propery and value', () => {",
+									"    const responseJSON = pm.response.json();",
+									"",
+									"    pm.expect(responseJSON.status).to.equal(102);",
+									"    pm.expect(responseJSON.message).to.equal('Parameter password harus di isi');",
+									"    pm.expect(responseJSON.data).to.equal(null);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"nazar@email.com\",\n  \"first_name\": \"Nazar\",\n  \"last_name\": \"Alwi\",\n  \"password\": \"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:{{port}}/registration"
+					},
+					"response": []
+				},
+				{
+					"name": "Register with Invalid Email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response 400 status code', () => {",
+									"    pm.expect(pm.response).to.have.status(400);",
+									"});",
+									"",
+									"pm.test('response Content-Type header should have application/json value', () => {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');",
+									"});",
+									"",
+									"pm.test('response body should an object', () => {",
+									"    const responseJSON = pm.response.json();",
+									"    pm.expect(responseJSON).to.be.an('object');",
+									"});",
+									"",
+									"pm.test('response body should have correct propery and value', () => {",
+									"    const responseJSON = pm.response.json();",
+									"",
+									"    pm.expect(responseJSON.status).to.equal(102);",
+									"    pm.expect(responseJSON.message).to.equal('Paramter email tidak sesuai format');",
+									"    pm.expect(responseJSON.data).to.equal(null);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"nazaremail\",\n  \"first_name\": \"Nazar\",\n  \"last_name\": \"Alwi\",\n  \"password\": \"abcdef1234\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:{{port}}/registration"
+					},
+					"response": []
+				},
+				{
+					"name": "Register with Invalid Password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response 400 status code', () => {",
+									"    pm.expect(pm.response).to.have.status(400);",
+									"});",
+									"",
+									"pm.test('response Content-Type header should have application/json value', () => {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');",
+									"});",
+									"",
+									"pm.test('response body should an object', () => {",
+									"    const responseJSON = pm.response.json();",
+									"    pm.expect(responseJSON).to.be.an('object');",
+									"});",
+									"",
+									"pm.test('response body should have correct propery and value', () => {",
+									"    const responseJSON = pm.response.json();",
+									"",
+									"    pm.expect(responseJSON.status).to.equal(102);",
+									"    pm.expect(responseJSON.message).to.equal('Password length minimal 8 karakter');",
+									"    pm.expect(responseJSON.data).to.equal(null);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"nazar@email.com\",\n  \"first_name\": \"Nazar\",\n  \"last_name\": \"Alwi\",\n  \"password\": \"abcd\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:{{port}}/registration"
+					},
+					"response": []
+				},
+				{
+					"name": "Register with User Nazar",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response 201 status code', () => {",
+									"    pm.expect(pm.response).to.have.status(201);",
+									"});",
+									"",
+									"pm.test('response Content-Type header should have application/json value', () => {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');",
+									"});",
+									"",
+									"pm.test('response body should an object', () => {",
+									"    const responseJSON = pm.response.json();",
+									"    pm.expect(responseJSON).to.be.an('object');",
+									"});",
+									"",
+									"pm.test('response body should have correct propery and value', () => {",
+									"    const responseJSON = pm.response.json();",
+									"",
+									"    pm.expect(responseJSON.status).to.equal(0);",
+									"    pm.expect(responseJSON.message).to.equal('Registrasi berhasil silahkan login');",
+									"    pm.expect(responseJSON.data).to.equal(null);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"nazar@email.com\",\n  \"first_name\": \"Nazar\",\n  \"last_name\": \"Alwi\",\n  \"password\": \"abcdef1234\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:{{port}}/registration"
+					},
+					"response": []
+				},
+				{
+					"name": "Register with User Nazar (As Existing User)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response 400 status code', () => {",
+									"    pm.expect(pm.response).to.have.status(400);",
+									"});",
+									"",
+									"pm.test('response Content-Type header should have application/json value', () => {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');",
+									"});",
+									"",
+									"pm.test('response body should an object', () => {",
+									"    const responseJSON = pm.response.json();",
+									"    pm.expect(responseJSON).to.be.an('object');",
+									"});",
+									"",
+									"pm.test('response body should have correct propery and value', () => {",
+									"    const responseJSON = pm.response.json();",
+									"",
+									"    pm.expect(responseJSON.status).to.equal(102);",
+									"    pm.expect(responseJSON.message).to.equal('Email sudah terdaftar');",
+									"    pm.expect(responseJSON.data).to.equal(null);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"nazar@email.com\",\n  \"first_name\": \"Nazar\",\n  \"last_name\": \"Alwi\",\n  \"password\": \"abcdef1234\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:{{port}}/registration"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Login",
+			"item": [
+				{
+					"name": "[No test] Prerequisite",
+					"item": [
+						{
+							"name": "Reset Database",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-internal-secret",
+										"value": "{{internalKey}}",
+										"type": "text"
+									}
+								],
+								"url": "http://localhost:{{port}}/internal/reset"
+							},
+							"response": []
+						},
+						{
+							"name": "Register with User Nazar",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"nazar@email.com\",\n  \"first_name\": \"Nazar\",\n  \"last_name\": \"Alwi\",\n  \"password\": \"abcdef1234\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:{{port}}/registration"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Login with Invalid Email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response 400 status code', () => {",
+									"    pm.expect(pm.response).to.have.status(400);",
+									"});",
+									"",
+									"pm.test('response Content-Type header should have application/json value', () => {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');",
+									"});",
+									"",
+									"pm.test('response body should an object', () => {",
+									"    const responseJSON = pm.response.json();",
+									"    pm.expect(responseJSON).to.be.an('object');",
+									"});",
+									"",
+									"pm.test('response body should have correct propery and value', () => {",
+									"    const responseJSON = pm.response.json();",
+									"",
+									"    pm.expect(responseJSON.status).to.equal(102);",
+									"    pm.expect(responseJSON.message).to.equal('Paramter email tidak sesuai format');",
+									"    pm.expect(responseJSON.data).to.equal(null);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"nazaremail\",\n  \"password\": \"abcdef1234\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:{{port}}/login"
+					},
+					"response": []
+				},
+				{
+					"name": "Login with Empty Email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response 400 status code', () => {",
+									"    pm.expect(pm.response).to.have.status(400);",
+									"});",
+									"",
+									"pm.test('response Content-Type header should have application/json value', () => {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');",
+									"});",
+									"",
+									"pm.test('response body should an object', () => {",
+									"    const responseJSON = pm.response.json();",
+									"    pm.expect(responseJSON).to.be.an('object');",
+									"});",
+									"",
+									"pm.test('response body should have correct propery and value', () => {",
+									"    const responseJSON = pm.response.json();",
+									"",
+									"    pm.expect(responseJSON.status).to.equal(102);",
+									"    pm.expect(responseJSON.message).to.equal('Parameter email harus di isi');",
+									"    pm.expect(responseJSON.data).to.equal(null);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"\",\n  \"password\": \"abcdef1234\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:{{port}}/login"
+					},
+					"response": []
+				},
+				{
+					"name": "Login with Invalid Password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response 400 status code', () => {",
+									"    pm.expect(pm.response).to.have.status(400);",
+									"});",
+									"",
+									"pm.test('response Content-Type header should have application/json value', () => {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');",
+									"});",
+									"",
+									"pm.test('response body should an object', () => {",
+									"    const responseJSON = pm.response.json();",
+									"    pm.expect(responseJSON).to.be.an('object');",
+									"});",
+									"",
+									"pm.test('response body should have correct propery and value', () => {",
+									"    const responseJSON = pm.response.json();",
+									"",
+									"    pm.expect(responseJSON.status).to.equal(102);",
+									"    pm.expect(responseJSON.message).to.equal('Password length minimal 8 karakter');",
+									"    pm.expect(responseJSON.data).to.equal(null);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"nazar@email.com\",\n  \"password\": \"abcd\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:{{port}}/login"
+					},
+					"response": []
+				},
+				{
+					"name": "Login with Empty Password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response 400 status code', () => {",
+									"    pm.expect(pm.response).to.have.status(400);",
+									"});",
+									"",
+									"pm.test('response Content-Type header should have application/json value', () => {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');",
+									"});",
+									"",
+									"pm.test('response body should an object', () => {",
+									"    const responseJSON = pm.response.json();",
+									"    pm.expect(responseJSON).to.be.an('object');",
+									"});",
+									"",
+									"pm.test('response body should have correct propery and value', () => {",
+									"    const responseJSON = pm.response.json();",
+									"",
+									"    pm.expect(responseJSON.status).to.equal(102);",
+									"    pm.expect(responseJSON.message).to.equal('Parameter password harus di isi');",
+									"    pm.expect(responseJSON.data).to.equal(null);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"nazar@email.com\",\n  \"password\": \"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:{{port}}/login"
+					},
+					"response": []
+				},
+				{
+					"name": "Login with Unregistered User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response 401 status code', () => {",
+									"    pm.expect(pm.response).to.have.status(401);",
+									"});",
+									"",
+									"pm.test('response Content-Type header should have application/json value', () => {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');",
+									"});",
+									"",
+									"pm.test('response body should an object', () => {",
+									"    const responseJSON = pm.response.json();",
+									"    pm.expect(responseJSON).to.be.an('object');",
+									"});",
+									"",
+									"pm.test('response body should have correct propery and value', () => {",
+									"    const responseJSON = pm.response.json();",
+									"",
+									"    pm.expect(responseJSON.status).to.equal(103);",
+									"    pm.expect(responseJSON.message).to.equal('Username atau password salah');",
+									"    pm.expect(responseJSON.data).to.equal(null);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"nazaralwi@email.com\",\n  \"password\": \"abcdef1234\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:{{port}}/login"
+					},
+					"response": []
+				},
+				{
+					"name": "Login with User Nazar",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response 200 status code', () => {",
+									"    pm.expect(pm.response).to.have.status(200);",
+									"});",
+									"",
+									"pm.test('response Content-Type header should have application/json value', () => {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');",
+									"});",
+									"",
+									"pm.test('response body should an object', () => {",
+									"    const responseJSON = pm.response.json();",
+									"    pm.expect(responseJSON).to.be.an('object');",
+									"});",
+									"",
+									"pm.test('response body should have correct propery and value', () => {",
+									"    const responseJSON = pm.response.json();",
+									"",
+									"    pm.expect(responseJSON.status).to.equal(0);",
+									"    pm.expect(responseJSON.message).to.equal('Login Sukses');",
+									"    pm.expect(responseJSON.data).to.be.an('object');",
+									"    pm.expect(responseJSON.data.token).to.be.a('string');",
+									"    ",
+									"    pm.environment.set('token', responseJSON.data.token);",
+									"    // pm.environment.set('refreshToken', responseJson.data.refreshToken); <- Maybe we should add refresh token",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"nazar@email.com\",\n  \"password\": \"abcdef1234\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:{{port}}/login"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Profile",
+			"item": [
+				{
+					"name": "[No test] Prerequisite",
+					"item": [
+						{
+							"name": "Reset Database",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-internal-secret",
+										"value": "{{internalKey}}",
+										"type": "text"
+									}
+								],
+								"url": "http://localhost:{{port}}/internal/reset"
+							},
+							"response": []
+						},
+						{
+							"name": "Register with User Nazar",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"nazar@email.com\",\n  \"first_name\": \"Nazar\",\n  \"last_name\": \"Alwi\",\n  \"password\": \"abcdef1234\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:{{port}}/registration"
+							},
+							"response": []
+						},
+						{
+							"name": "Login with User Nazar",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const responseJSON = pm.response.json();",
+											"pm.environment.set('token', responseJSON.data.token);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"nazar@email.com\",\n  \"password\": \"abcdef1234\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:{{port}}/login"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Get Profile with Unauthorized User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response 401 status code', () => {",
+									"    pm.expect(pm.response).to.have.status(401);",
+									"});",
+									"",
+									"pm.test('response Content-Type header should have application/json value', () => {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');",
+									"});",
+									"",
+									"pm.test('response body should an object', () => {",
+									"    const responseJSON = pm.response.json();",
+									"    pm.expect(responseJSON).to.be.an('object');",
+									"});",
+									"",
+									"pm.test('response body should have correct propery and value', () => {",
+									"    const responseJSON = pm.response.json();",
+									"",
+									"    pm.expect(responseJSON.status).to.equal(108);",
+									"    pm.expect(responseJSON.message).to.equal('Token tidak tidak valid atau kadaluwarsa');",
+									"    pm.expect(responseJSON.data).to.be.null;",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "xxx"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:{{port}}/profile"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Profile User Nazar",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response 200 status code', () => {",
+									"    pm.expect(pm.response).to.have.status(200);",
+									"});",
+									"",
+									"pm.test('response Content-Type header should have application/json value', () => {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');",
+									"});",
+									"",
+									"pm.test('response body should an object', () => {",
+									"    const responseJSON = pm.response.json();",
+									"    pm.expect(responseJSON).to.be.an('object');",
+									"});",
+									"",
+									"pm.test('response body should have correct propery and value', () => {",
+									"    const responseJSON = pm.response.json();",
+									"",
+									"    pm.expect(responseJSON.status).to.equal(0);",
+									"    pm.expect(responseJSON.message).to.equal('Sukses');",
+									"    pm.expect(responseJSON.data).to.be.an('object');",
+									"    pm.expect(responseJSON.data.email).to.be.a('string');",
+									"    pm.expect(responseJSON.data.first_name).to.be.a('string');",
+									"    pm.expect(responseJSON.data.last_name).to.be.a('string');",
+									"    pm.expect(responseJSON.data.profile_image).to.be.null;",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:{{port}}/profile"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Update Profile",
+			"item": [
+				{
+					"name": "[No test] Prerequisite",
+					"item": [
+						{
+							"name": "Reset Database",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-internal-secret",
+										"value": "{{internalKey}}",
+										"type": "text"
+									}
+								],
+								"url": "http://localhost:{{port}}/internal/reset"
+							},
+							"response": []
+						},
+						{
+							"name": "Register with User Nazar",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"nazar@email.com\",\n  \"first_name\": \"Nazar\",\n  \"last_name\": \"Alwi\",\n  \"password\": \"abcdef1234\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:{{port}}/registration"
+							},
+							"response": []
+						},
+						{
+							"name": "Login with User Nazar",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const responseJSON = pm.response.json();",
+											"pm.environment.set('token', responseJSON.data.token);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"nazar@email.com\",\n  \"password\": \"abcdef1234\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:{{port}}/login"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Update Profile with Unauthorized User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response 401 status code', () => {",
+									"    pm.expect(pm.response).to.have.status(401);",
+									"});",
+									"",
+									"pm.test('response Content-Type header should have application/json value', () => {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');",
+									"});",
+									"",
+									"pm.test('response body should an object', () => {",
+									"    const responseJSON = pm.response.json();",
+									"    pm.expect(responseJSON).to.be.an('object');",
+									"});",
+									"",
+									"pm.test('response body should have correct propery and value', () => {",
+									"    const responseJSON = pm.response.json();",
+									"",
+									"    pm.expect(responseJSON.status).to.equal(108);",
+									"    pm.expect(responseJSON.message).to.equal('Token tidak tidak valid atau kadaluwarsa');",
+									"    pm.expect(responseJSON.data).to.be.null;",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "xxx"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"first_name\": \"Nazar Edited\",\n  \"last_name\": \"Nazar Edited\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:{{port}}/profile/update"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Profile User Nazar",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response 200 status code', () => {",
+									"    pm.expect(pm.response).to.have.status(200);",
+									"});",
+									"",
+									"pm.test('response Content-Type header should have application/json value', () => {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');",
+									"});",
+									"",
+									"pm.test('response body should an object', () => {",
+									"    const responseJSON = pm.response.json();",
+									"    pm.expect(responseJSON).to.be.an('object');",
+									"});",
+									"",
+									"pm.test('response body should have correct propery and value', () => {",
+									"    const responseJSON = pm.response.json();",
+									"",
+									"    pm.expect(responseJSON.status).to.equal(0);",
+									"    pm.expect(responseJSON.message).to.equal('Update Pofile berhasil');",
+									"    pm.expect(responseJSON.data).to.be.an('object');",
+									"    pm.expect(responseJSON.data.email).to.be.a('string');",
+									"    pm.expect(responseJSON.data.first_name).to.be.a('string');",
+									"    pm.expect(responseJSON.data.last_name).to.be.a('string');",
+									"    pm.expect(responseJSON.data.profile_image).to.be.null;",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"first_name\": \"Nazar Edited\",\n  \"last_name\": \"Nazar Edited\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:{{port}}/profile/update"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Upload Profile Image",
+			"item": [
+				{
+					"name": "[No test] Prerequisite",
+					"item": [
+						{
+							"name": "Reset Database",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-internal-secret",
+										"value": "{{internalKey}}",
+										"type": "text"
+									}
+								],
+								"url": "http://localhost:{{port}}/internal/reset"
+							},
+							"response": []
+						},
+						{
+							"name": "Register with User Nazar",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"nazar@email.com\",\n  \"first_name\": \"Nazar\",\n  \"last_name\": \"Alwi\",\n  \"password\": \"abcdef1234\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:{{port}}/registration"
+							},
+							"response": []
+						},
+						{
+							"name": "Login with User Nazar",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const responseJSON = pm.response.json();",
+											"pm.environment.set('token', responseJSON.data.token);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"nazar@email.com\",\n  \"password\": \"abcdef1234\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:{{port}}/login"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Upload Profile Image User Nazar with Unsupport File",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response 400 status code', () => {",
+									"    pm.expect(pm.response).to.have.status(400);",
+									"});",
+									"",
+									"pm.test('response Content-Type header should have application/json value', () => {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');",
+									"});",
+									"",
+									"pm.test('response body should an object', () => {",
+									"    const responseJSON = pm.response.json();",
+									"    pm.expect(responseJSON).to.be.an('object');",
+									"});",
+									"",
+									"pm.test('response body should have correct propery and value', () => {",
+									"    const responseJSON = pm.response.json();",
+									"",
+									"    pm.expect(responseJSON.status).to.equal(102);",
+									"    pm.expect(responseJSON.message).to.equal('Format Image tidak sesuai');",
+									"    pm.expect(responseJSON.data).to.be.null;;",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "software-engineer-i-os-ats-1.pdf"
+								}
+							]
+						},
+						"url": "http://localhost:{{port}}/profile/image"
+					},
+					"response": []
+				},
+				{
+					"name": "Upload Profile Image User Nazar with Unauthorized User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response 401 status code', () => {",
+									"    pm.expect(pm.response).to.have.status(401);",
+									"});",
+									"",
+									"pm.test('response Content-Type header should have application/json value', () => {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');",
+									"});",
+									"",
+									"pm.test('response body should an object', () => {",
+									"    const responseJSON = pm.response.json();",
+									"    pm.expect(responseJSON).to.be.an('object');",
+									"});",
+									"",
+									"pm.test('response body should have correct propery and value', () => {",
+									"    const responseJSON = pm.response.json();",
+									"",
+									"    pm.expect(responseJSON.status).to.equal(108);",
+									"    pm.expect(responseJSON.message).to.equal('Token tidak tidak valid atau kadaluwarsa');",
+									"    pm.expect(responseJSON.data).to.be.null;",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "xxx"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "G2kZczzakAAri8t.jpeg"
+								}
+							]
+						},
+						"url": "http://localhost:{{port}}/profile/image"
+					},
+					"response": []
+				},
+				{
+					"name": "Upload Profile Image User Nazar",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response 200 status code', () => {",
+									"    pm.expect(pm.response).to.have.status(200);",
+									"});",
+									"",
+									"pm.test('response Content-Type header should have application/json value', () => {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');",
+									"});",
+									"",
+									"pm.test('response body should an object', () => {",
+									"    const responseJSON = pm.response.json();",
+									"    pm.expect(responseJSON).to.be.an('object');",
+									"});",
+									"",
+									"pm.test('response body should have correct propery and value', () => {",
+									"    const responseJSON = pm.response.json();",
+									"",
+									"    pm.expect(responseJSON.status).to.equal(0);",
+									"    pm.expect(responseJSON.message).to.equal('Update Profile Image berhasil');",
+									"    pm.expect(responseJSON.data).to.be.an('object');",
+									"    pm.expect(responseJSON.data.email).to.be.a('string');",
+									"    pm.expect(responseJSON.data.first_name).to.be.a('string');",
+									"    pm.expect(responseJSON.data.last_name).to.be.a('string');",
+									"    pm.expect(responseJSON.data.profile_image).to.a('string');",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "G2kZczzakAAri8t.jpeg"
+								}
+							]
+						},
+						"url": "http://localhost:{{port}}/profile/image"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Banner",
+			"item": [
+				{
+					"name": "[No test] Prerequisite",
+					"item": [
+						{
+							"name": "Reset Database",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-internal-secret",
+										"value": "{{internalKey}}",
+										"type": "text"
+									}
+								],
+								"url": "http://localhost:{{port}}/internal/reset"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Get Banner",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response 200 status code', () => {",
+									"    pm.expect(pm.response).to.have.status(200);",
+									"});",
+									"",
+									"pm.test('response Content-Type header should have application/json value', () => {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');",
+									"});",
+									"",
+									"pm.test('response body should an object', () => {",
+									"    const responseJSON = pm.response.json();",
+									"    pm.expect(responseJSON).to.be.an('object');",
+									"});",
+									"",
+									"pm.test('response body should have correct propery and value', () => {",
+									"    const responseJSON = pm.response.json();",
+									"",
+									"    pm.expect(responseJSON.status).to.equal(0);",
+									"    pm.expect(responseJSON.message).to.equal('Sukses');",
+									"    pm.expect(responseJSON.data).to.be.an('array');",
+									"    pm.expect(responseJSON.data[0].banner_name).to.be.a('string');",
+									"    pm.expect(responseJSON.data[0].banner_image).to.be.a('string');",
+									"    pm.expect(responseJSON.data[0].description).to.be.a('string');",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:{{port}}/banner"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Services",
+			"item": [
+				{
+					"name": "[No test] Prerequisite",
+					"item": [
+						{
+							"name": "Reset Database",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-internal-secret",
+										"value": "{{internalKey}}",
+										"type": "text"
+									}
+								],
+								"url": "http://localhost:{{port}}/internal/reset"
+							},
+							"response": []
+						},
+						{
+							"name": "Register with User Nazar",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"nazar@email.com\",\n  \"first_name\": \"Nazar\",\n  \"last_name\": \"Alwi\",\n  \"password\": \"abcdef1234\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:{{port}}/registration"
+							},
+							"response": []
+						},
+						{
+							"name": "Login with User Nazar",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const responseJSON = pm.response.json();",
+											"pm.environment.set('token', responseJSON.data.token);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"nazar@email.com\",\n  \"password\": \"abcdef1234\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:{{port}}/login"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Get Services with Unauthorized User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response 401 status code', () => {",
+									"    pm.expect(pm.response).to.have.status(401);",
+									"});",
+									"",
+									"pm.test('response Content-Type header should have application/json value', () => {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');",
+									"});",
+									"",
+									"pm.test('response body should an object', () => {",
+									"    const responseJSON = pm.response.json();",
+									"    pm.expect(responseJSON).to.be.an('object');",
+									"});",
+									"",
+									"pm.test('response body should have correct propery and value', () => {",
+									"    const responseJSON = pm.response.json();",
+									"",
+									"    pm.expect(responseJSON.status).to.equal(108);",
+									"    pm.expect(responseJSON.message).to.equal('Token tidak tidak valid atau kadaluwarsa');",
+									"    pm.expect(responseJSON.data).to.be.null;",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "xxx"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:{{port}}/services"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Services",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response 200 status code', () => {",
+									"    pm.expect(pm.response).to.have.status(200);",
+									"});",
+									"",
+									"pm.test('response Content-Type header should have application/json value', () => {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');",
+									"});",
+									"",
+									"pm.test('response body should an object', () => {",
+									"    const responseJSON = pm.response.json();",
+									"    pm.expect(responseJSON).to.be.an('object');",
+									"});",
+									"",
+									"pm.test('response body should have correct propery and value', () => {",
+									"    const responseJSON = pm.response.json();",
+									"",
+									"    pm.expect(responseJSON.status).to.equal(0);",
+									"    pm.expect(responseJSON.message).to.equal('Sukses');",
+									"    pm.expect(responseJSON.data).to.be.an('array');",
+									"    pm.expect(responseJSON.data[0].service_code).to.be.a('string');",
+									"    pm.expect(responseJSON.data[0].service_name).to.be.a('string');",
+									"    pm.expect(responseJSON.data[0].service_icon).to.be.a('string');",
+									"    pm.expect(responseJSON.data[0].service_tariff).to.be.a('number');",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:{{port}}/services"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Balance",
+			"item": [
+				{
+					"name": "[No test] Prerequisite",
+					"item": [
+						{
+							"name": "Reset Database",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-internal-secret",
+										"value": "{{internalKey}}",
+										"type": "text"
+									}
+								],
+								"url": "http://localhost:{{port}}/internal/reset"
+							},
+							"response": []
+						},
+						{
+							"name": "Register with User Nazar",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"nazar@email.com\",\n  \"first_name\": \"Nazar\",\n  \"last_name\": \"Alwi\",\n  \"password\": \"abcdef1234\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:{{port}}/registration"
+							},
+							"response": []
+						},
+						{
+							"name": "Login with User Nazar",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const responseJSON = pm.response.json();",
+											"pm.environment.set('token', responseJSON.data.token);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"nazar@email.com\",\n  \"password\": \"abcdef1234\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:{{port}}/login"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Get Balance with Unauthorized User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response 401 status code', () => {",
+									"    pm.expect(pm.response).to.have.status(401);",
+									"});",
+									"",
+									"pm.test('response Content-Type header should have application/json value', () => {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');",
+									"});",
+									"",
+									"pm.test('response body should an object', () => {",
+									"    const responseJSON = pm.response.json();",
+									"    pm.expect(responseJSON).to.be.an('object');",
+									"});",
+									"",
+									"pm.test('response body should have correct propery and value', () => {",
+									"    const responseJSON = pm.response.json();",
+									"",
+									"    pm.expect(responseJSON.status).to.equal(108);",
+									"    pm.expect(responseJSON.message).to.equal('Token tidak tidak valid atau kadaluwarsa');",
+									"    pm.expect(responseJSON.data).to.be.null;",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "xxx"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:{{port}}/balance"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Balance",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response 200 status code', () => {",
+									"    pm.expect(pm.response).to.have.status(200);",
+									"});",
+									"",
+									"pm.test('response Content-Type header should have application/json value', () => {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');",
+									"});",
+									"",
+									"pm.test('response body should an object', () => {",
+									"    const responseJSON = pm.response.json();",
+									"    pm.expect(responseJSON).to.be.an('object');",
+									"});",
+									"",
+									"pm.test('response body should have correct propery and value', () => {",
+									"    const responseJSON = pm.response.json();",
+									"",
+									"    pm.expect(responseJSON.status).to.equal(0);",
+									"    pm.expect(responseJSON.message).to.equal('Get Balance Berhasil');",
+									"    pm.expect(responseJSON.data).to.be.an('object');",
+									"    pm.expect(responseJSON.data.balance).to.be.a('number');",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:{{port}}/balance"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Topup",
+			"item": [
+				{
+					"name": "[No test] Prerequisite",
+					"item": [
+						{
+							"name": "Reset Database",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-internal-secret",
+										"value": "{{internalKey}}",
+										"type": "text"
+									}
+								],
+								"url": "http://localhost:{{port}}/internal/reset"
+							},
+							"response": []
+						},
+						{
+							"name": "Register with User Nazar",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"nazar@email.com\",\n  \"first_name\": \"Nazar\",\n  \"last_name\": \"Alwi\",\n  \"password\": \"abcdef1234\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:{{port}}/registration"
+							},
+							"response": []
+						},
+						{
+							"name": "Login with User Nazar",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const responseJSON = pm.response.json();",
+											"pm.environment.set('token', responseJSON.data.token);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"nazar@email.com\",\n  \"password\": \"abcdef1234\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:{{port}}/login"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Topup Balance with Minus Number",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response 400 status code', () => {",
+									"    pm.expect(pm.response).to.have.status(400);",
+									"});",
+									"",
+									"pm.test('response Content-Type header should have application/json value', () => {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');",
+									"});",
+									"",
+									"pm.test('response body should an object', () => {",
+									"    const responseJSON = pm.response.json();",
+									"    pm.expect(responseJSON).to.be.an('object');",
+									"});",
+									"",
+									"pm.test('response body should have correct propery and value', () => {",
+									"    const responseJSON = pm.response.json();",
+									"",
+									"    pm.expect(responseJSON.status).to.equal(102);",
+									"    pm.expect(responseJSON.message).to.equal('Paramter amount hanya boleh angka dan tidak boleh lebih kecil dari 0');",
+									"    pm.expect(responseJSON.data).to.equal(null);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"top_up_amount\": -1000000\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:{{port}}/topup"
+					},
+					"response": []
+				},
+				{
+					"name": "Topup Balance with Invalid Value",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response 400 status code', () => {",
+									"    pm.expect(pm.response).to.have.status(400);",
+									"});",
+									"",
+									"pm.test('response Content-Type header should have application/json value', () => {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');",
+									"});",
+									"",
+									"pm.test('response body should an object', () => {",
+									"    const responseJSON = pm.response.json();",
+									"    pm.expect(responseJSON).to.be.an('object');",
+									"});",
+									"",
+									"pm.test('response body should have correct propery and value', () => {",
+									"    const responseJSON = pm.response.json();",
+									"",
+									"    pm.expect(responseJSON.status).to.equal(102);",
+									"    pm.expect(responseJSON.message).to.equal('Paramter amount hanya boleh angka dan tidak boleh lebih kecil dari 0');",
+									"    pm.expect(responseJSON.data).to.equal(null);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"top_up_amount\": \"xxx\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:{{port}}/topup"
+					},
+					"response": []
+				},
+				{
+					"name": "Topup Balance with Unauthorized User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response 401 status code', () => {",
+									"    pm.expect(pm.response).to.have.status(401);",
+									"});",
+									"",
+									"pm.test('response Content-Type header should have application/json value', () => {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');",
+									"});",
+									"",
+									"pm.test('response body should an object', () => {",
+									"    const responseJSON = pm.response.json();",
+									"    pm.expect(responseJSON).to.be.an('object');",
+									"});",
+									"",
+									"pm.test('response body should have correct propery and value', () => {",
+									"    const responseJSON = pm.response.json();",
+									"",
+									"    pm.expect(responseJSON.status).to.equal(108);",
+									"    pm.expect(responseJSON.message).to.equal('Token tidak tidak valid atau kadaluwarsa');",
+									"    pm.expect(responseJSON.data).to.equal(null);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "xxx"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"top_up_amount\": 1000000\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:{{port}}/topup"
+					},
+					"response": []
+				},
+				{
+					"name": "Topup Balance",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response 200 status code', () => {",
+									"    pm.expect(pm.response).to.have.status(200);",
+									"});",
+									"",
+									"pm.test('response Content-Type header should have application/json value', () => {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');",
+									"});",
+									"",
+									"pm.test('response body should an object', () => {",
+									"    const responseJSON = pm.response.json();",
+									"    pm.expect(responseJSON).to.be.an('object');",
+									"});",
+									"",
+									"pm.test('response body should have correct propery and value', () => {",
+									"    const responseJSON = pm.response.json();",
+									"",
+									"    pm.expect(responseJSON.status).to.equal(0);",
+									"    pm.expect(responseJSON.message).to.equal('Top Up Balance berhasil');",
+									"    pm.expect(responseJSON.data).to.be.an('object');",
+									"    pm.expect(responseJSON.data.balance).to.be.a('number');",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"top_up_amount\": 1000000\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:{{port}}/topup"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Transaction",
+			"item": [
+				{
+					"name": "[No test] Prerequisite",
+					"item": [
+						{
+							"name": "Reset Database",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-internal-secret",
+										"value": "{{internalKey}}",
+										"type": "text"
+									}
+								],
+								"url": "http://localhost:{{port}}/internal/reset"
+							},
+							"response": []
+						},
+						{
+							"name": "Register with User Nazar",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"nazar@email.com\",\n  \"first_name\": \"Nazar\",\n  \"last_name\": \"Alwi\",\n  \"password\": \"abcdef1234\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:{{port}}/registration"
+							},
+							"response": []
+						},
+						{
+							"name": "Login with User Nazar",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const responseJSON = pm.response.json();",
+											"pm.environment.set('token', responseJSON.data.token);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"nazar@email.com\",\n  \"password\": \"abcdef1234\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:{{port}}/login"
+							},
+							"response": []
+						},
+						{
+							"name": "Topup Balance Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{token}}"
+									}
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"top_up_amount\": 1000000\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:{{port}}/topup"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Transaction with Invalid Service Code",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response 400 status code', () => {",
+									"    pm.expect(pm.response).to.have.status(400);",
+									"});",
+									"",
+									"pm.test('response Content-Type header should have application/json value', () => {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');",
+									"});",
+									"",
+									"pm.test('response body should an object', () => {",
+									"    const responseJSON = pm.response.json();",
+									"    pm.expect(responseJSON).to.be.an('object');",
+									"});",
+									"",
+									"pm.test('response body should have correct propery and value', () => {",
+									"    const responseJSON = pm.response.json();",
+									"",
+									"    pm.expect(responseJSON.status).to.equal(102);",
+									"    pm.expect(responseJSON.message).to.equal('Service atau Layanan tidak ditemukan');",
+									"    pm.expect(responseJSON.data).to.equal(null);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"service_code\": \"XXX\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:{{port}}/transaction"
+					},
+					"response": []
+				},
+				{
+					"name": "Transaction with Unauthorized User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response 401 status code', () => {",
+									"    pm.expect(pm.response).to.have.status(401);",
+									"});",
+									"",
+									"pm.test('response Content-Type header should have application/json value', () => {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');",
+									"});",
+									"",
+									"pm.test('response body should an object', () => {",
+									"    const responseJSON = pm.response.json();",
+									"    pm.expect(responseJSON).to.be.an('object');",
+									"});",
+									"",
+									"pm.test('response body should have correct propery and value', () => {",
+									"    const responseJSON = pm.response.json();",
+									"",
+									"    pm.expect(responseJSON.status).to.equal(108);",
+									"    pm.expect(responseJSON.message).to.equal('Token tidak tidak valid atau kadaluwarsa');",
+									"    pm.expect(responseJSON.data).to.equal(null);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "xxx"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"service_code\": \"PULSA\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:{{port}}/transaction"
+					},
+					"response": []
+				},
+				{
+					"name": "Transaction with Service Code PULSA",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response 200 status code', () => {",
+									"    pm.expect(pm.response).to.have.status(200);",
+									"});",
+									"",
+									"pm.test('response Content-Type header should have application/json value', () => {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');",
+									"});",
+									"",
+									"pm.test('response body should an object', () => {",
+									"    const responseJSON = pm.response.json();",
+									"    pm.expect(responseJSON).to.be.an('object');",
+									"});",
+									"",
+									"pm.test('response body should have correct propery and value', () => {",
+									"    const responseJSON = pm.response.json();",
+									"",
+									"    pm.expect(responseJSON.status).to.equal(0);",
+									"    pm.expect(responseJSON.message).to.equal('Transaksi berhasil');",
+									"    pm.expect(responseJSON.data).to.be.an('object');",
+									"    pm.expect(responseJSON.data.invoice_number).to.be.a('string');",
+									"    pm.expect(responseJSON.data.service_code).to.be.a('string');",
+									"    pm.expect(responseJSON.data.service_name).to.be.a('string');",
+									"    pm.expect(responseJSON.data.transaction_type).to.be.a('string');",
+									"    pm.expect(responseJSON.data.total_amount).to.be.a('number');",
+									"    pm.expect(responseJSON.data.created_on).to.be.a('string');",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"service_code\": \"PULSA\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:{{port}}/transaction"
+					},
+					"response": []
+				},
+				{
+					"name": "Transaction with Service Code PLN",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response 200 status code', () => {",
+									"    pm.expect(pm.response).to.have.status(200);",
+									"});",
+									"",
+									"pm.test('response Content-Type header should have application/json value', () => {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');",
+									"});",
+									"",
+									"pm.test('response body should an object', () => {",
+									"    const responseJSON = pm.response.json();",
+									"    pm.expect(responseJSON).to.be.an('object');",
+									"});",
+									"",
+									"pm.test('response body should have correct propery and value', () => {",
+									"    const responseJSON = pm.response.json();",
+									"",
+									"    pm.expect(responseJSON.status).to.equal(0);",
+									"    pm.expect(responseJSON.message).to.equal('Transaksi berhasil');",
+									"    pm.expect(responseJSON.data).to.be.an('object');",
+									"    pm.expect(responseJSON.data.invoice_number).to.be.a('string');",
+									"    pm.expect(responseJSON.data.service_code).to.be.a('string');",
+									"    pm.expect(responseJSON.data.service_name).to.be.a('string');",
+									"    pm.expect(responseJSON.data.transaction_type).to.be.a('string');",
+									"    pm.expect(responseJSON.data.total_amount).to.be.a('number');",
+									"    pm.expect(responseJSON.data.created_on).to.be.a('string');",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"service_code\": \"PLN\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:{{port}}/transaction"
+					},
+					"response": []
+				},
+				{
+					"name": "Transaction with Service Code PDAM",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response 200 status code', () => {",
+									"    pm.expect(pm.response).to.have.status(200);",
+									"});",
+									"",
+									"pm.test('response Content-Type header should have application/json value', () => {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');",
+									"});",
+									"",
+									"pm.test('response body should an object', () => {",
+									"    const responseJSON = pm.response.json();",
+									"    pm.expect(responseJSON).to.be.an('object');",
+									"});",
+									"",
+									"pm.test('response body should have correct propery and value', () => {",
+									"    const responseJSON = pm.response.json();",
+									"",
+									"    pm.expect(responseJSON.status).to.equal(0);",
+									"    pm.expect(responseJSON.message).to.equal('Transaksi berhasil');",
+									"    pm.expect(responseJSON.data).to.be.an('object');",
+									"    pm.expect(responseJSON.data.invoice_number).to.be.a('string');",
+									"    pm.expect(responseJSON.data.service_code).to.be.a('string');",
+									"    pm.expect(responseJSON.data.service_name).to.be.a('string');",
+									"    pm.expect(responseJSON.data.transaction_type).to.be.a('string');",
+									"    pm.expect(responseJSON.data.total_amount).to.be.a('number');",
+									"    pm.expect(responseJSON.data.created_on).to.be.a('string');",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"service_code\": \"PDAM\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:{{port}}/transaction"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Transaction with Insufficient Balance",
+			"item": [
+				{
+					"name": "[No test] Prerequisite",
+					"item": [
+						{
+							"name": "Reset Database",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-internal-secret",
+										"value": "{{internalKey}}",
+										"type": "text"
+									}
+								],
+								"url": "http://localhost:{{port}}/internal/reset"
+							},
+							"response": []
+						},
+						{
+							"name": "Register with User Nazar",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"nazar@email.com\",\n  \"first_name\": \"Nazar\",\n  \"last_name\": \"Alwi\",\n  \"password\": \"abcdef1234\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:{{port}}/registration"
+							},
+							"response": []
+						},
+						{
+							"name": "Login with User Nazar",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const responseJSON = pm.response.json();",
+											"pm.environment.set('token', responseJSON.data.token);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"nazar@email.com\",\n  \"password\": \"abcdef1234\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:{{port}}/login"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Transaction with Invalid Service Code",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response 400 status code', () => {",
+									"    pm.expect(pm.response).to.have.status(400);",
+									"});",
+									"",
+									"pm.test('response Content-Type header should have application/json value', () => {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');",
+									"});",
+									"",
+									"pm.test('response body should an object', () => {",
+									"    const responseJSON = pm.response.json();",
+									"    pm.expect(responseJSON).to.be.an('object');",
+									"});",
+									"",
+									"pm.test('response body should have correct propery and value', () => {",
+									"    const responseJSON = pm.response.json();",
+									"",
+									"    pm.expect(responseJSON.status).to.equal(102);",
+									"    pm.expect(responseJSON.message).to.equal('Service atau Layanan tidak ditemukan');",
+									"    pm.expect(responseJSON.data).to.equal(null);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"service_code\": \"XXX\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:{{port}}/transaction"
+					},
+					"response": []
+				},
+				{
+					"name": "Transaction with Unauthorized User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response 401 status code', () => {",
+									"    pm.expect(pm.response).to.have.status(401);",
+									"});",
+									"",
+									"pm.test('response Content-Type header should have application/json value', () => {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');",
+									"});",
+									"",
+									"pm.test('response body should an object', () => {",
+									"    const responseJSON = pm.response.json();",
+									"    pm.expect(responseJSON).to.be.an('object');",
+									"});",
+									"",
+									"pm.test('response body should have correct propery and value', () => {",
+									"    const responseJSON = pm.response.json();",
+									"",
+									"    pm.expect(responseJSON.status).to.equal(108);",
+									"    pm.expect(responseJSON.message).to.equal('Token tidak tidak valid atau kadaluwarsa');",
+									"    pm.expect(responseJSON.data).to.equal(null);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "xxx"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"service_code\": \"PULSA\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:{{port}}/transaction"
+					},
+					"response": []
+				},
+				{
+					"name": "Transaction with Service Code PULSA",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response 400 status code', () => {",
+									"    pm.expect(pm.response).to.have.status(400);",
+									"});",
+									"",
+									"pm.test('response Content-Type header should have application/json value', () => {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');",
+									"});",
+									"",
+									"pm.test('response body should an object', () => {",
+									"    const responseJSON = pm.response.json();",
+									"    pm.expect(responseJSON).to.be.an('object');",
+									"});",
+									"",
+									"pm.test('response body should have correct propery and value', () => {",
+									"    const responseJSON = pm.response.json();",
+									"",
+									"    pm.expect(responseJSON.status).to.equal(102);",
+									"    pm.expect(responseJSON.message).to.equal('Saldo tidak cukup');",
+									"    pm.expect(responseJSON.data).to.equal(null);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"service_code\": \"PULSA\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:{{port}}/transaction"
+					},
+					"response": []
+				},
+				{
+					"name": "Transaction with Service Code PLN",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response 400 status code', () => {",
+									"    pm.expect(pm.response).to.have.status(400);",
+									"});",
+									"",
+									"pm.test('response Content-Type header should have application/json value', () => {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');",
+									"});",
+									"",
+									"pm.test('response body should an object', () => {",
+									"    const responseJSON = pm.response.json();",
+									"    pm.expect(responseJSON).to.be.an('object');",
+									"});",
+									"",
+									"pm.test('response body should have correct propery and value', () => {",
+									"    const responseJSON = pm.response.json();",
+									"",
+									"    pm.expect(responseJSON.status).to.equal(102);",
+									"    pm.expect(responseJSON.message).to.equal('Saldo tidak cukup');",
+									"    pm.expect(responseJSON.data).to.equal(null);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"service_code\": \"PLN\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:{{port}}/transaction"
+					},
+					"response": []
+				},
+				{
+					"name": "Transaction with Service Code PDAM",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response 400 status code', () => {",
+									"    pm.expect(pm.response).to.have.status(400);",
+									"});",
+									"",
+									"pm.test('response Content-Type header should have application/json value', () => {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');",
+									"});",
+									"",
+									"pm.test('response body should an object', () => {",
+									"    const responseJSON = pm.response.json();",
+									"    pm.expect(responseJSON).to.be.an('object');",
+									"});",
+									"",
+									"pm.test('response body should have correct propery and value', () => {",
+									"    const responseJSON = pm.response.json();",
+									"",
+									"    pm.expect(responseJSON.status).to.equal(102);",
+									"    pm.expect(responseJSON.message).to.equal('Saldo tidak cukup');",
+									"    pm.expect(responseJSON.data).to.equal(null);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"service_code\": \"PDAM\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:{{port}}/transaction"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Transaction History",
+			"item": [
+				{
+					"name": "[No test] Prerequisite",
+					"item": [
+						{
+							"name": "Reset Database",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-internal-secret",
+										"value": "{{internalKey}}",
+										"type": "text"
+									}
+								],
+								"url": "http://localhost:{{port}}/internal/reset"
+							},
+							"response": []
+						},
+						{
+							"name": "Register with User Nazar",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"nazar@email.com\",\n  \"first_name\": \"Nazar\",\n  \"last_name\": \"Alwi\",\n  \"password\": \"abcdef1234\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:{{port}}/registration"
+							},
+							"response": []
+						},
+						{
+							"name": "Login with User Nazar",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const responseJSON = pm.response.json();",
+											"pm.environment.set('token', responseJSON.data.token);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"nazar@email.com\",\n  \"password\": \"abcdef1234\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:{{port}}/login"
+							},
+							"response": []
+						},
+						{
+							"name": "Topup Balance",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{token}}"
+									}
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"top_up_amount\": 1000000\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:{{port}}/topup"
+							},
+							"response": []
+						},
+						{
+							"name": "Transaction with Service Code PULSA",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{token}}"
+									}
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"service_code\": \"PULSA\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:{{port}}/transaction"
+							},
+							"response": []
+						},
+						{
+							"name": "Transaction with Service Code PLN",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{token}}"
+									}
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"service_code\": \"PLN\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:{{port}}/transaction"
+							},
+							"response": []
+						},
+						{
+							"name": "Transaction with Service Code PDAM",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{token}}"
+									}
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"service_code\": \"PDAM\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:{{port}}/transaction"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Get Transaction History with Unauthorized User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response 401 status code', () => {",
+									"    pm.expect(pm.response).to.have.status(401);",
+									"});",
+									"",
+									"pm.test('response Content-Type header should have application/json value', () => {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');",
+									"});",
+									"",
+									"pm.test('response body should an object', () => {",
+									"    const responseJSON = pm.response.json();",
+									"    pm.expect(responseJSON).to.be.an('object');",
+									"});",
+									"",
+									"pm.test('response body should have correct propery and value', () => {",
+									"    const responseJSON = pm.response.json();",
+									"",
+									"    pm.expect(responseJSON.status).to.equal(108);",
+									"    pm.expect(responseJSON.message).to.equal('Token tidak tidak valid atau kadaluwarsa');",
+									"    pm.expect(responseJSON.data).to.be.null;",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "xxx"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/transaction/history?limit=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"transaction",
+								"history"
+							],
+							"query": [
+								{
+									"key": "offset",
+									"value": "4",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Transaction History with User Nazar",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response 200 status code', () => {",
+									"    pm.expect(pm.response).to.have.status(200);",
+									"});",
+									"",
+									"pm.test('response Content-Type header should have application/json value', () => {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');",
+									"});",
+									"",
+									"pm.test('response body should an object', () => {",
+									"    const responseJSON = pm.response.json();",
+									"    pm.expect(responseJSON).to.be.an('object');",
+									"});",
+									"",
+									"pm.test('response body should have correct propery and value', () => {",
+									"    const responseJSON = pm.response.json();",
+									"",
+									"    pm.expect(responseJSON.status).to.equal(0);",
+									"    pm.expect(responseJSON.message).to.equal('Get History Berhasil');",
+									"    pm.expect(responseJSON.offset).to.be.a('number');",
+									"    pm.expect(responseJSON.limit).to.be.a('number');",
+									"    pm.expect(responseJSON.records).to.be.a('array');",
+									"    pm.expect(responseJSON.records[0].invoice_number).to.be.a('string');",
+									"    pm.expect(responseJSON.records[0].transaction_type).to.be.a('string');",
+									"    pm.expect(responseJSON.records[0].description).to.be.a('string');",
+									"    pm.expect(responseJSON.records[0].total_amount).to.be.a('number');",
+									"    pm.expect(responseJSON.records[0].created_on).to.be.a('string');",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/transaction/history?limit=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"transaction",
+								"history"
+							],
+							"query": [
+								{
+									"key": "offset",
+									"value": "4",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

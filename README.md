@@ -125,15 +125,16 @@ Token akan didapatkan dari endpoint Login.
 | `POST` | `/internal/reset` | Membersihkan databases |
 
 ## Postman Collection dan Enviroment
-Ketika membangun PPBO RESTful API, tentu Anda perlu menguji untuk memastikan API berjalan sesuai dengan kriteria yang ada. Kami sudah menyediakan berkas Postman Collection dan Environment yang dapat Anda gunakan untuk pengujian. Berkasnya kami simpan di dalam folder `/postman`.
+Ketika membangun PPBO RESTful API, tentu Anda perlu menguji untuk memastikan API berjalan sesuai dengan kriteria yang ada. Kami sudah menyediakan berkas Postman Collection dan Environment yang dapat Anda gunakan untuk pengujian. Berkasnya kami simpan di dalam folder [`/postman`](https://github.com/nazaralwi/NutechTakeHomeTest/tree/master/postman).
 
 ### Cara Import Collection dan Environment PPOB RESTful API
 1. Buka aplikasi Postman.
 2. Klik tombol Import yang berada di bagian atas panel kiri Postman.
 3. Pilih opsi Upload Files.
-4. Pilih kedua berkas pada folder `/postman` (Collection dan Environment), lalu klik Open.
+4. Pilih kedua berkas pada folder [`/postman`](https://github.com/nazaralwi/NutechTakeHomeTest/tree/master/postman) (Collection dan Environment), lalu klik Open.
 5. Setelah file berhasil dipilih, klik tombol Import.
 6. Sekarang, PPOB API Test Collection dan PPOB API Environment akan muncul di Postman Anda.
 7. Pastikan untuk mengaktifkan Environment PPOB API sebelum melakukan pengujian endpoint.
+8. Pastikan untuk melakukan konfigurasi Working Directory (Settings > General > Working Directory) untuk pengujian unggah berkas.
 
 
