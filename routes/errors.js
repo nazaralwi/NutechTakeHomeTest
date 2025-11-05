@@ -22,7 +22,7 @@ class TokenError extends ClientError {
 class AuthError extends ClientError {
   constructor(message) {
     super(message, 401, 103);
-    this.name = 'TokenError';
+    this.name = 'AuthError';
   }
 }
 
@@ -40,4 +40,10 @@ class NotFoundError extends ClientError {
   }
 }
 
-module.exports = { ClientError, TokenError, AuthError, InvariantError, NotFoundError };
+module.exports = {
+  ClientError,
+  TokenError,
+  AuthError,
+  InvariantError,
+  NotFoundError,
+};

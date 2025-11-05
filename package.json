@@ -5,7 +5,8 @@
   "scripts": {
     "start": "NODE_ENV=production node ./bin/www",
     "dev": "NODE_ENV=development nodemon ./bin/www",
-    "migrate": "node-pg-migrate"
+    "migrate": "node-pg-migrate",
+    "format": "prettier --write \"{app.js,bin/www,routes/**/*.{js,jsx,ts,tsx,html,css,md}}\""
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
@@ -23,6 +24,7 @@
     "pg": "^8.16.3"
   },
   "devDependencies": {
-    "nodemon": "^3.1.10"
+    "nodemon": "^3.1.10",
+    "prettier": "3.6.2"
   }
 }

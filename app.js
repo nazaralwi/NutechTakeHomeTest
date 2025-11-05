@@ -1,19 +1,19 @@
 require('dotenv').config();
-let createError = require('http-errors');
-let express = require('express');
-let path = require('path');
-let cookieParser = require('cookie-parser');
-let logger = require('morgan');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
 
-let indexRouter = require('./routes/index');
-let usersRouter = require('./routes/users');
-let membershipRouter = require('./routes/membership');
-let informationRouter = require('./routes/information');
-let transactionRouter = require('./routes/transaction');
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/users');
+const membershipRouter = require('./routes/membership');
+const informationRouter = require('./routes/information');
+const transactionRouter = require('./routes/transaction');
 const internalRouter = require('./routes/internal');
 const { ClientError } = require('./routes/errors');
 
-let app = express();
+const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -38,7 +38,7 @@ if (process.env.NODE_ENV === 'development') {
 app.use('/', express.static(path.join(process.cwd(), 'uploads')));
 
 // catch 404 and forward to error handler
-app.use(function (req, res, next) {
+app.use((req, res, next) => {
   next(createError(404));
 });
 
@@ -52,9 +52,12 @@ app.use((err, req, res, next) => {
     });
   }
 
-  return res.status(500).json({ 
-    status: err.status, 
-    message: process.env.NODE_ENV === 'development' ? err.message : 'Internal Server Error',
+  return res.status(500).json({
+    status: err.status,
+    message:
+      process.env.NODE_ENV === 'development'
+        ? err.message
+        : 'Internal Server Error',
     data: null,
   });
 });

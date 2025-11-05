@@ -7,7 +7,11 @@ const express = require('express');
 const router = express.Router();
 const pool = require('./db');
 const upload = require('./upload');
-const { getEmailFromToken, isUserExist, checkRequiredField } = require('./common');
+const {
+  getEmailFromToken,
+  isUserExist,
+  checkRequiredField,
+} = require('./common');
 const { InvariantError, AuthError, NotFoundError } = require('./errors');
 
 router.post('/registration', async (req, res, next) => {
@@ -38,7 +42,11 @@ router.post('/registration', async (req, res, next) => {
     };
 
     await pool.query(query);
-    return res.status(201).json({ status: 0, message: 'Registrasi berhasil silahkan login', data: null });
+    return res.status(201).json({
+      status: 0,
+      message: 'Registrasi berhasil silahkan login',
+      data: null,
+    });
   } catch (err) {
     next(err);
   }
@@ -62,7 +70,7 @@ router.post('/login', async (req, res, next) => {
     const query = {
       text: 'SELECT * FROM users WHERE email = $1',
       values: [email],
-    }
+    };
 
     const users = await pool.query(query);
 
@@ -81,7 +89,11 @@ router.post('/login', async (req, res, next) => {
       expiresIn: process.env.JWT_EXPIRES_IN || '1h',
     });
 
-    return res.status(200).json({ status: 0, message: 'Login Sukses', data: { token } });
+    return res.status(200).json({
+      status: 0,
+      message: 'Login Sukses',
+      data: { token },
+    });
   } catch (err) {
     next(err);
   }
@@ -98,7 +110,7 @@ router.get('/profile', async (req, res, next) => {
     };
 
     const result = await pool.query(query);
-    if (result.rowCount === 0) {
+    if (!result.rowCount) {
       throw new NotFoundError('User tidak ditemukan');
     }
 
@@ -131,7 +143,7 @@ router.put('/profile/update', async (req, res, next) => {
 
     const result = await pool.query(query);
 
-    if (result.rowCount === 0) {
+    if (!result.rowCount) {
       throw new NotFoundError('User tidak ditemukan');
     }
     const user = result.rows[0];
@@ -177,7 +189,7 @@ router.put('/profile/image', (req, res, next) => {
 
       const result = await pool.query(query);
 
-      if (result.rowCount === 0) {
+      if (!result.rowCount) {
         throw new NotFoundError('User tidak ditemukan');
       }
       const user = result.rows[0];

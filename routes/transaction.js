@@ -1,6 +1,6 @@
 const { nanoid } = require('nanoid');
-let express = require('express');
-let router = express.Router();
+const express = require('express');
+const router = express.Router();
 const pool = require('./db');
 const { getEmailFromToken } = require('./common');
 const { InvariantError } = require('./errors');
@@ -16,7 +16,11 @@ router.get('/balance', async (req, res, next) => {
     };
 
     const result = await pool.query(query);
-    return res.status(200).json({ status: 0, message: 'Get Balance Berhasil', data: result.rows[0] });
+    return res.status(200).json({
+      status: 0,
+      message: 'Get Balance Berhasil',
+      data: result.rows[0],
+    });
   } catch (err) {
     next(err);
   }
@@ -34,9 +38,11 @@ router.post('/topup', async (req, res, next) => {
     const { top_up_amount } = req.body;
     const authHeader = req.headers.authorization;
     const email = await getEmailFromToken(authHeader);
-    
+
     if (typeof top_up_amount !== 'number' || top_up_amount < 0) {
-      throw new InvariantError('Paramter amount hanya boleh angka dan tidak boleh lebih kecil dari 0');
+      throw new InvariantError(
+        'Paramter amount hanya boleh angka dan tidak boleh lebih kecil dari 0'
+      );
     }
 
     const getUserIdQuery = {
@@ -64,13 +70,17 @@ router.post('/topup', async (req, res, next) => {
         'Top Up balance',
         top_up_amount,
         new Date().toISOString(),
-        userId
+        userId,
       ],
     };
 
     await pool.query(recordTransactionQuery);
 
-    return res.status(200).json({ status: 0, message: 'Top Up Balance berhasil', data: result.rows[0] });
+    return res.status(200).json({
+      status: 0,
+      message: 'Top Up Balance berhasil',
+      data: result.rows[0],
+    });
   } catch (err) {
     next(err);
   }
@@ -90,10 +100,12 @@ router.post('/transaction', async (req, res, next) => {
 
     const getServicesQuery = {
       text: 'SELECT * FROM services',
-    }
+    };
     const services = (await pool.query(getServicesQuery)).rows;
 
-    const service = services.find((service) => service.service_code === service_code);
+    const service = services.find(
+      (service) => service.service_code === service_code
+    );
 
     if (!service) {
       throw new InvariantError('Service atau Layanan tidak ditemukan');
@@ -133,9 +145,9 @@ router.post('/transaction', async (req, res, next) => {
 
     await pool.query(recordTransactionQuery);
 
-    return res.status(200).json({ 
-      status: 0, 
-      message: 'Transaksi berhasil', 
+    return res.status(200).json({
+      status: 0,
+      message: 'Transaksi berhasil',
       data: {
         invoice_number: invoiceNumber,
         service_code: service.service_code,
@@ -166,28 +178,27 @@ router.get('/transaction/history', async (req, res, next) => {
     const getTransactionQuery = {
       text: 'SELECT * FROM transactions WHERE user_id = $1',
       values: [user.id],
-    }
+    };
 
     const transactions = (await pool.query(getTransactionQuery)).rows;
     const filteredTransactions = transactions
-      .map((transaction) => (
-        {
-          invoice_number: transaction.invoice_number,
-          transaction_type: transaction.transaction_type,
-          description: transaction.description,
-          total_amount: transaction.total_amount,
-          created_on: transaction.created_on,
-        }
-      ))
-      .sort((a, b) => new Date(b.created_on) - new Date(a.created_on))
+      .map((transaction) => ({
+        invoice_number: transaction.invoice_number,
+        transaction_type: transaction.transaction_type,
+        description: transaction.description,
+        total_amount: transaction.total_amount,
+        created_on: transaction.created_on,
+      }))
+      .sort((a, b) => new Date(b.created_on) - new Date(a.created_on));
 
-    const limitedTransaction = limit !== 0
-      ? filteredTransactions.slice(offset, offset + limit)
-      : filteredTransactions.slice(offset);
+    const limitedTransaction =
+      limit !== 0
+        ? filteredTransactions.slice(offset, offset + limit)
+        : filteredTransactions.slice(offset);
 
-    return res.status(200).json({ 
-      status: 0, 
-      message: 'Get History Berhasil', 
+    return res.status(200).json({
+      status: 0,
+      message: 'Get History Berhasil',
       offset: offset,
       limit: limit,
       records: limitedTransaction,
