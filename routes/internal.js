@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const pool = require('./db');
-const { ForbiddenError } = require('./errors');
+const pool = require('../utils/db');
+const { ForbiddenError } = require('../utils/errors');
 
 router.post('/reset', async (req, res) => {
   try {

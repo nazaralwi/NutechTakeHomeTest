@@ -5,14 +5,16 @@ const multer = require('multer');
 const path = require('path');
 const express = require('express');
 const router = express.Router();
-const pool = require('./db');
-const upload = require('./upload');
+const pool = require('../utils/db');
+const upload = require('../utils/upload');
 const {
   getEmailFromToken,
   isUserExist,
   checkRequiredField,
-} = require('./common');
-const { InvariantError, AuthError, NotFoundError } = require('./errors');
+  validateEmail,
+  validatePassword,
+} = require('../utils/common');
+const { InvariantError, AuthError, NotFoundError } = require('../utils/errors');
 
 router.post('/registration', async (req, res, next) => {
   try {
@@ -20,15 +22,8 @@ router.post('/registration', async (req, res, next) => {
     const { email, first_name, last_name, password } = req.body;
 
     checkRequiredField({ email, first_name, last_name, password });
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      throw new InvariantError('Paramter email tidak sesuai format');
-    }
-
-    if (password.length < 8) {
-      throw new InvariantError('Password length minimal 8 karakter');
-    }
+    validateEmail(email);
+    validatePassword(password);
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -40,8 +35,8 @@ router.post('/registration', async (req, res, next) => {
       text: 'INSERT INTO users (id, email, first_name, last_name, password) VALUES ($1, $2, $3, $4, $5)',
       values: [id, email, first_name, last_name, hashedPassword],
     };
-
     await pool.query(query);
+
     return res.status(201).json({
       status: 0,
       message: 'Registrasi berhasil silahkan login',
@@ -57,32 +52,20 @@ router.post('/login', async (req, res, next) => {
     const { email, password } = req.body;
 
     checkRequiredField({ email, password });
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      throw new InvariantError('Paramter email tidak sesuai format');
-    }
-
-    if (password.length < 8) {
-      throw new InvariantError('Password length minimal 8 karakter');
-    }
+    validateEmail(email);
+    validatePassword(password);
 
     const query = {
       text: 'SELECT * FROM users WHERE email = $1',
       values: [email],
     };
+    const result = await pool.query(query);
 
-    const users = await pool.query(query);
+    if (!result.rowCount) throw new AuthError('Username atau password salah');
 
-    if (!users.rows.length) {
-      throw new AuthError('Username atau password salah');
-    }
-
-    const user = users.rows[0];
+    const user = result.rows[0];
     const passwordMatch = await bcrypt.compare(password, user.password);
-    if (!passwordMatch) {
-      throw new AuthError('Username atau password salah');
-    }
+    if (!passwordMatch) throw new AuthError('Username atau password salah');
 
     const payload = { email: user.email };
     const token = jwt.sign(payload, process.env.JWT_SECRET, {
@@ -108,13 +91,12 @@ router.get('/profile', async (req, res, next) => {
       text: 'SELECT email, first_name, last_name, profile_image FROM users WHERE email = $1',
       values: [email],
     };
-
     const result = await pool.query(query);
-    if (!result.rowCount) {
-      throw new NotFoundError('User tidak ditemukan');
-    }
+
+    if (!result.rowCount) throw new NotFoundError('User tidak ditemukan');
 
     const user = result.rows[0];
+
     return res.status(200).json({
       status: 0,
       message: 'Sukses',
@@ -140,12 +122,10 @@ router.put('/profile/update', async (req, res, next) => {
       text: 'UPDATE users SET first_name = $1, last_name = $2 WHERE email = $3 RETURNING email, first_name, last_name, profile_image',
       values: [first_name, last_name, email],
     };
-
     const result = await pool.query(query);
 
-    if (!result.rowCount) {
-      throw new NotFoundError('User tidak ditemukan');
-    }
+    if (!result.rowCount) throw new NotFoundError('User tidak ditemukan');
+
     const user = result.rows[0];
 
     return res.status(200).json({
@@ -189,9 +169,7 @@ router.put('/profile/image', (req, res, next) => {
 
       const result = await pool.query(query);
 
-      if (!result.rowCount) {
-        throw new NotFoundError('User tidak ditemukan');
-      }
+      if (!result.rowCount) throw new NotFoundError('User tidak ditemukan');
       const user = result.rows[0];
 
       return res.status(200).json({

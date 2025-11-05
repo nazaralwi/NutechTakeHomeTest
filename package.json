@@ -6,7 +6,7 @@
     "start": "NODE_ENV=production node ./bin/www",
     "dev": "NODE_ENV=development nodemon ./bin/www",
     "migrate": "node-pg-migrate",
-    "format": "prettier --write \"{app.js,bin/www,routes/**/*.{js,jsx,ts,tsx,html,css,md}}\""
+    "format": "prettier --write \"{app.js,bin/www,utils/**/*,routes/**/*.{js,jsx,ts,tsx,html,css,md}}\""
   },
   "dependencies": {
     "bcrypt": "^6.0.0",

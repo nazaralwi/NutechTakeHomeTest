@@ -11,7 +11,7 @@ const membershipRouter = require('./routes/membership');
 const informationRouter = require('./routes/information');
 const transactionRouter = require('./routes/transaction');
 const internalRouter = require('./routes/internal');
-const { ClientError } = require('./routes/errors');
+const { ClientError } = require('./utils/errors');
 
 const app = express();
 

@@ -1,9 +1,9 @@
 const { nanoid } = require('nanoid');
 const express = require('express');
 const router = express.Router();
-const pool = require('./db');
-const { getEmailFromToken } = require('./common');
-const { InvariantError } = require('./errors');
+const pool = require('../utils/db');
+const { getEmailFromToken, generateInvoiceNumber } = require('../utils/common');
+const { InvariantError } = require('../utils/errors');
 
 router.get('/balance', async (req, res, next) => {
   try {
@@ -14,8 +14,8 @@ router.get('/balance', async (req, res, next) => {
       text: 'SELECT balance FROM users WHERE email = $1',
       values: [email],
     };
-
     const result = await pool.query(query);
+
     return res.status(200).json({
       status: 0,
       message: 'Get Balance Berhasil',
@@ -25,13 +25,6 @@ router.get('/balance', async (req, res, next) => {
     next(err);
   }
 });
-
-const generateInvoiceNumber = () => {
-  const now = new Date();
-  const date = now.toISOString().slice(0, 10).replace(/-/g, ''); // YYYYMMDD
-  const random = String(Math.floor(Math.random() * 1000)).padStart(3, '0'); // 3 digit acak
-  return `INV${date}-${random}`;
-};
 
 router.post('/topup', async (req, res, next) => {
   try {
@@ -49,7 +42,6 @@ router.post('/topup', async (req, res, next) => {
       text: 'SELECT id FROM users WHERE email = $1',
       values: [email],
     };
-
     const userId = (await pool.query(getUserIdQuery)).rows[0].id;
 
     const topUpBalanceQuery = {
@@ -73,7 +65,6 @@ router.post('/topup', async (req, res, next) => {
         userId,
       ],
     };
-
     await pool.query(recordTransactionQuery);
 
     return res.status(200).json({
