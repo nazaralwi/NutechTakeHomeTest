@@ -8,7 +8,7 @@ const router = express.Router();
 const pool = require('./db');
 const upload = require('./upload');
 const { getEmailFromToken, isUserExist, checkRequiredField } = require('./common');
-const { InvariantError } = require('./errors');
+const { InvariantError, AuthError, NotFoundError } = require('./errors');
 
 router.post('/registration', async (req, res, next) => {
   try {
@@ -59,10 +59,6 @@ router.post('/login', async (req, res, next) => {
       throw new InvariantError('Password length minimal 8 karakter');
     }
 
-    if (!(await isUserExist(email))) {
-      return res.status(400).json({ status: 103, message: 'Email tidak terdaftar', data: null });
-    }
-
     const query = {
       text: 'SELECT * FROM users WHERE email = $1',
       values: [email],
@@ -71,13 +67,13 @@ router.post('/login', async (req, res, next) => {
     const users = await pool.query(query);
 
     if (!users.rows.length) {
-      return res.status(401).json({ status: 103, message: 'Username atau password salah', data: null });
+      throw new AuthError('Username atau password salah');
     }
 
     const user = users.rows[0];
     const passwordMatch = await bcrypt.compare(password, user.password);
     if (!passwordMatch) {
-      return res.status(401).json({ status: 103, message: 'Username atau password salah', data: null });
+      throw new AuthError('Username atau password salah');
     }
 
     const payload = { email: user.email };
@@ -103,11 +99,7 @@ router.get('/profile', async (req, res, next) => {
 
     const result = await pool.query(query);
     if (result.rowCount === 0) {
-      return res.status(404).json({
-        status: 105,
-        message: 'User tidak ditemukan',
-        data: null,
-      });
+      throw new NotFoundError('User tidak ditemukan');
     }
 
     const user = result.rows[0];
@@ -140,11 +132,7 @@ router.put('/profile/update', async (req, res, next) => {
     const result = await pool.query(query);
 
     if (result.rowCount === 0) {
-      return res.status(404).json({
-        status: 105,
-        message: 'User tidak ditemukan',
-        data: null,
-      });
+      throw new NotFoundError('User tidak ditemukan');
     }
     const user = result.rows[0];
 
@@ -190,11 +178,7 @@ router.put('/profile/image', (req, res, next) => {
       const result = await pool.query(query);
 
       if (result.rowCount === 0) {
-        return res.status(404).json({
-          status: 105,
-          message: 'User tidak ditemukan',
-          data: null,
-        });
+        throw new NotFoundError('User tidak ditemukan');
       }
       const user = result.rows[0];
 

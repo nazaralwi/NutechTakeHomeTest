@@ -1,10 +1,10 @@
 const pool = require('./db');
 const jwt = require('jsonwebtoken');
-const { AuthorizationError, InvariantError } = require('./errors');
+const { TokenError, InvariantError } = require('./errors');
 
 async function getEmailFromToken(authHeader) {
   if (!authHeader) {
-    throw new AuthorizationError('Token tidak ditemukan. Harap login terlebih dahulu.');
+    throw new TokenError('Token tidak ditemukan. Harap login terlebih dahulu.');
   }
 
   const token = authHeader.split(' ')[1];
@@ -13,7 +13,7 @@ async function getEmailFromToken(authHeader) {
   try {
     decoded = jwt.verify(token, process.env.JWT_SECRET);
   } catch (err) {
-    throw new AuthorizationError('Token tidak tidak valid atau kadaluwarsa');
+    throw new TokenError('Token tidak tidak valid atau kadaluwarsa');
   }
 
   return decoded.email;

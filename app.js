@@ -11,7 +11,7 @@ let membershipRouter = require('./routes/membership');
 let informationRouter = require('./routes/information');
 let transactionRouter = require('./routes/transaction');
 const internalRouter = require('./routes/internal');
-const { AuthorizationError, InvariantError } = require('./routes/errors');
+const { ClientError } = require('./routes/errors');
 
 let app = express();
 
@@ -44,24 +44,16 @@ app.use(function (req, res, next) {
 
 // error handler
 app.use((err, req, res, next) => {
-  if (err instanceof InvariantError) {
+  if (err instanceof ClientError) {
     return res.status(err.statusCode).json({
-      status: 102,
-      message: err.message,
-      data: null,
-    });
-  }
-
-  if (err instanceof AuthorizationError) {
-    return res.status(err.statusCode).json({
-      status: 108,
+      status: err.status,
       message: err.message,
       data: null,
     });
   }
 
   return res.status(500).json({ 
-    status: 102, 
+    status: err.status, 
     message: process.env.NODE_ENV === 'development' ? err.message : 'Internal Server Error',
     data: null,
   });

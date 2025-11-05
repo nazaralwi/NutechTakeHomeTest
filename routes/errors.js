@@ -1,5 +1,5 @@
 class ClientError extends Error {
-  constructor(message, statusCode = 400) {
+  constructor(message, statusCode, status) {
     super(message);
 
     if (this.constructor.name === 'ClientError') {
@@ -7,22 +7,37 @@ class ClientError extends Error {
     }
 
     this.statusCode = statusCode;
+    this.status = status;
     this.name = 'ClientError';
   }
 }
 
-class AuthorizationError extends ClientError {
+class TokenError extends ClientError {
   constructor(message) {
-    super(message, 401);
-    this.name = 'AuthorizationError';
+    super(message, 401, 108);
+    this.name = 'TokenError';
+  }
+}
+
+class AuthError extends ClientError {
+  constructor(message) {
+    super(message, 401, 103);
+    this.name = 'TokenError';
   }
 }
 
 class InvariantError extends ClientError {
   constructor(message) {
-    super(message);
+    super(message, 400, 102);
     this.name = 'InvariantError';
   }
 }
 
-module.exports = { ClientError, AuthorizationError, InvariantError };
+class NotFoundError extends ClientError {
+  constructor(message) {
+    super(message, 404, 105);
+    this.name = 'InvariantError';
+  }
+}
+
+module.exports = { ClientError, TokenError, AuthError, InvariantError, NotFoundError };

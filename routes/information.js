@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const pool = require('./db');
-const { AuthorizationError } = require('./errors');
+const { TokenError } = require('./errors');
 const { getEmailFromToken } = require('./common');
 
 router.get('/banner', async (req, res, next) => {
