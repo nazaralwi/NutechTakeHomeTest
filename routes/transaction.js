@@ -230,4 +230,73 @@ router.post('/transaction', async (req, res, next) => {
   }
 });
 
+router.get('/transaction/history', async (req, res, next) => {
+  try {
+    const authHeader = req.headers.authorization;
+    const { offset: offsetStr, limit: limitStr } = req.query;
+    const [offset, limit] = [Number(offsetStr) || 0, Number(limitStr) || 0];
+
+    if (!authHeader) {
+      return res.status(401).json({
+        status: 108,
+        message: 'Token tidak ditemukan. Harap login terlebih dahulu.',
+        data: null,
+      });
+    }
+
+    const token = authHeader.split(' ')[1];
+
+    let decoded;
+    try {
+      decoded = jwt.verify(token, process.env.JWT_SECRET);
+    } catch (err) {
+      return res.status(401).json({
+        status: 108,
+        message: 'Token tidak tidak valid atau kadaluwarsa',
+        data: null,
+      });
+    }
+
+    const { email } = decoded;
+
+    const getUserQuery = {
+      text: 'SELECT id FROM users WHERE email = $1',
+      values: [email],
+    };
+    const user = (await pool.query(getUserQuery)).rows[0];
+
+    const getTransactionQuery = {
+      text: 'SELECT * FROM transactions WHERE user_id = $1',
+      values: [user.id],
+    }
+
+    const transactions = (await pool.query(getTransactionQuery)).rows;
+    const filteredTransactions = transactions
+      .map((transaction) => (
+        {
+          invoice_number: transaction.invoice_number,
+          transaction_type: transaction.service_name,
+          description: transaction.description,
+          total_amount: transaction.total_amount,
+          created_on: transaction.created_on,
+        }
+      ))
+      .sort((a, b) => new Date(b.created_on) - new Date(a.created_on))
+
+    const limitedTransaction = limit !== 0
+      ? filteredTransactions.slice(offset, offset + limit)
+      : filteredTransactions.slice(offset);
+
+    res.status(200).json({ 
+      status: 0, 
+      message: 'Get History Berhasil', 
+      offset: offset,
+      limit: limit,
+      records: limitedTransaction,
+    });
+  } catch (err) {
+    res.status(500).json({ status: 102, message: err.message, data: null });
+  }
+});
+
 module.exports = router;
