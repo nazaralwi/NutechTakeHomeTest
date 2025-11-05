@@ -6,7 +6,9 @@ const path = require('path');
 const fs = require('fs');
 const express = require('express');
 const router = express.Router();
-const pool = require('./db.js');
+const pool = require('./db');
+const { AuthorizationError } = require('./errors');
+const { getEmailFromToken } = require('./common');
 
 async function isUserExist(email) {
   const query = {
@@ -158,21 +160,7 @@ router.post('/login', async (req, res, next) => {
 router.get('/profile', async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
-
-    const token = authHeader.split(' ')[1];
-
-    let decoded;
-    try {
-      decoded = jwt.verify(token, process.env.JWT_SECRET);
-    } catch (err) {
-      return res.status(401).json({
-        status: 108,
-        message: 'Token tidak tidak valid atau kadaluwarsa',
-        data: null,
-      });
-    }
-
-    const { email } = decoded;
+    const email = await getEmailFromToken(authHeader);
 
     const query = {
       text: 'SELECT email, first_name, last_name, profile_image FROM users WHERE email = $1',
@@ -200,6 +188,14 @@ router.get('/profile', async (req, res, next) => {
       },
     });
   } catch (err) {
+    if (err instanceof AuthorizationError) {
+      return res.status(err.statusCode).json({
+        status: 108,
+        message: err.message,
+        data: null,
+      });
+    }
+
     return res.status(500).json({
       status: 102,
       message: err.message,
@@ -212,21 +208,7 @@ router.put('/profile/update', async (req, res, next) => {
   try {
     const { first_name, last_name } = req.body;
     const authHeader = req.headers.authorization;
-
-    const token = authHeader.split(' ')[1];
-
-    let decoded;
-    try {
-      decoded = jwt.verify(token, process.env.JWT_SECRET);
-    } catch (err) {
-      return res.status(401).json({
-        status: 108,
-        message: 'Token tidak tidak valid atau kadaluwarsa',
-        data: null,
-      });
-    }
-
-    const { email } = decoded;
+    const email = await getEmailFromToken(authHeader);
 
     const query = {
       text: 'UPDATE users SET first_name = $1, last_name = $2 WHERE email = $3 RETURNING email, first_name, last_name, profile_image',
@@ -255,6 +237,14 @@ router.put('/profile/update', async (req, res, next) => {
       },
     });
   } catch (err) {
+    if (err instanceof AuthorizationError) {
+      return res.status(err.statusCode).json({
+        status: 108,
+        message: err.message,
+        data: null,
+      });
+    }
+    
     return res.status(500).json({
       status: 102,
       message: err.message,
@@ -292,21 +282,7 @@ router.put('/profile/image', (req, res, next) => {
       const imageFileName = path.basename(imagePath);
 
       const authHeader = req.headers.authorization;
-
-      const token = authHeader.split(' ')[1];
-
-      let decoded;
-      try {
-        decoded = jwt.verify(token, process.env.JWT_SECRET);
-      } catch (err) {
-        return res.status(401).json({
-          status: 108,
-          message: 'Token tidak tidak valid atau kadaluwarsa',
-          data: null,
-        });
-      }
-
-      const { email } = decoded;
+      const email = await getEmailFromToken(authHeader);
 
       const query = {
         text: 'UPDATE users SET profile_image = $1 WHERE email = $2 RETURNING email, first_name, last_name, profile_image',
@@ -335,6 +311,14 @@ router.put('/profile/image', (req, res, next) => {
         },
       });
     } catch (err) {
+      if (err instanceof AuthorizationError) {
+        return res.status(err.statusCode).json({
+          status: 108,
+          message: err.message,
+          data: null,
+        });
+      }
+
       return res.status(500).json({
         status: 102,
         message: err.message,

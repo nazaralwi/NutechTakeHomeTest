@@ -1,38 +1,14 @@
 const { nanoid } = require('nanoid');
 let express = require('express');
-const jwt = require('jsonwebtoken');
 let router = express.Router();
-const pool = require('./db.js');
+const pool = require('./db');
+const { AuthorizationError } = require('./errors');
+const { getEmailFromToken } = require('./common');
 
 router.get('/balance', async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
-
-    if (!authHeader) {
-      return res.status(401).json({
-        status: 108,
-        message: 'Token tidak ditemukan. Harap login terlebih dahulu.',
-        data: null,
-      });
-    }
-
-    const token = authHeader.split(' ')[1];
-
-    let decoded;
-    try {
-      decoded = jwt.verify(token, process.env.JWT_SECRET);
-    } catch (err) {
-      return res.status(401).json({
-        status: 108,
-        message: 'Token tidak tidak valid atau kadaluwarsa',
-        data: null,
-      });
-    }
-
-    console.log('decoded ' + decoded);
-    const { email } = decoded;
-
-    console.log('email ' + email);
+    const email = await getEmailFromToken(authHeader);
 
     const query = {
       text: 'SELECT balance FROM users WHERE email = $1',
@@ -42,6 +18,13 @@ router.get('/balance', async (req, res, next) => {
     const result = await pool.query(query);
     return res.status(200).json({ status: 0, message: 'Get Balance Berhasil', data: result.rows[0] });
   } catch (err) {
+    if (err instanceof AuthorizationError) {
+      return res.status(err.statusCode).json({
+        status: 108,
+        message: err.message,
+        data: null,
+      });
+    }
     return res.status(500).json({ status: 102, message: err.message, data: null });
   }
 });
@@ -55,30 +38,10 @@ const generateInvoiceNumber = () => {
 
 router.post('/topup', async (req, res, next) => {
   try {
-    const authHeader = req.headers.authorization;
     const { top_up_amount } = req.body;
-
-    if (!authHeader) {
-      return res.status(401).json({
-        status: 108,
-        message: 'Token tidak ditemukan. Harap login terlebih dahulu.',
-        data: null,
-      });
-    }
-
-    const token = authHeader.split(' ')[1];
-
-    let decoded;
-    try {
-      decoded = jwt.verify(token, process.env.JWT_SECRET);
-    } catch (err) {
-      return res.status(401).json({
-        status: 108,
-        message: 'Token tidak tidak valid atau kadaluwarsa',
-        data: null,
-      });
-    }
-
+    const authHeader = req.headers.authorization;
+    const email = await getEmailFromToken(authHeader);
+    
     if (typeof top_up_amount !== 'number' || top_up_amount < 0) {
       return res.status(400).json({
         status: 102,
@@ -86,8 +49,6 @@ router.post('/topup', async (req, res, next) => {
         data: null,
       });
     }
-
-    const { email } = decoded;
 
     const getUserIdQuery = {
       text: 'SELECT id FROM users WHERE email = $1',
@@ -122,37 +83,23 @@ router.post('/topup', async (req, res, next) => {
 
     return res.status(200).json({ status: 0, message: 'Top Up Balance berhasil', data: result.rows[0] });
   } catch (err) {
+    if (err instanceof AuthorizationError) {
+      return res.status(err.statusCode).json({
+        status: 108,
+        message: err.message,
+        data: null,
+      });
+    }
+
     return res.status(500).json({ status: 102, message: err.message, data: null });
   }
 });
 
 router.post('/transaction', async (req, res, next) => {
   try {
-    const authHeader = req.headers.authorization;
     const { service_code } = req.body;
-
-    if (!authHeader) {
-      return res.status(401).json({
-        status: 108,
-        message: 'Token tidak ditemukan. Harap login terlebih dahulu.',
-        data: null,
-      });
-    }
-
-    const token = authHeader.split(' ')[1];
-
-    let decoded;
-    try {
-      decoded = jwt.verify(token, process.env.JWT_SECRET);
-    } catch (err) {
-      return res.status(401).json({
-        status: 108,
-        message: 'Token tidak tidak valid atau kadaluwarsa',
-        data: null,
-      });
-    }
-
-    const { email } = decoded;
+    const authHeader = req.headers.authorization;
+    const email = await getEmailFromToken(authHeader);
 
     const getUserQuery = {
       text: 'SELECT id, balance FROM users WHERE email = $1',
@@ -226,38 +173,24 @@ router.post('/transaction', async (req, res, next) => {
       },
     });
   } catch (err) {
+    if (err instanceof AuthorizationError) {
+      return res.status(err.statusCode).json({
+        status: 108,
+        message: err.message,
+        data: null,
+      });
+    }
+
     return res.status(500).json({ status: 102, message: err.message, data: null });
   }
 });
 
 router.get('/transaction/history', async (req, res, next) => {
   try {
-    const authHeader = req.headers.authorization;
     const { offset: offsetStr, limit: limitStr } = req.query;
     const [offset, limit] = [Number(offsetStr) || 0, Number(limitStr) || 0];
-
-    if (!authHeader) {
-      return res.status(401).json({
-        status: 108,
-        message: 'Token tidak ditemukan. Harap login terlebih dahulu.',
-        data: null,
-      });
-    }
-
-    const token = authHeader.split(' ')[1];
-
-    let decoded;
-    try {
-      decoded = jwt.verify(token, process.env.JWT_SECRET);
-    } catch (err) {
-      return res.status(401).json({
-        status: 108,
-        message: 'Token tidak tidak valid atau kadaluwarsa',
-        data: null,
-      });
-    }
-
-    const { email } = decoded;
+    const authHeader = req.headers.authorization;
+    const email = await getEmailFromToken(authHeader);
 
     const getUserQuery = {
       text: 'SELECT id FROM users WHERE email = $1',
@@ -295,6 +228,14 @@ router.get('/transaction/history', async (req, res, next) => {
       records: limitedTransaction,
     });
   } catch (err) {
+    if (err instanceof AuthorizationError) {
+      return res.status(err.statusCode).json({
+        status: 108,
+        message: err.message,
+        data: null,
+      });
+    }
+
     return res.status(500).json({ status: 102, message: err.message, data: null });
   }
 });

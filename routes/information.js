@@ -1,44 +1,8 @@
 const express = require('express');
-const jwt = require('jsonwebtoken');
 const router = express.Router();
-const pool = require('./db.js');
-
-class ClientError extends Error {
-  constructor(message, statusCode = 400) {
-    super(message);
-
-    if (this.constructor.name === 'ClientError') {
-      throw new Error('cannot instantiate abstract class');
-    }
-
-    this.statusCode = statusCode;
-    this.name = 'ClientError';
-  }
-}
-
-class AuthorizationError extends ClientError {
-  constructor(message) {
-    super(message, 401);
-    this.name = 'AuthorizationError';
-  }
-}
-
-async function getEmailFromToken(authHeader) {
-  if (!authHeader) {
-    throw new AuthorizationError('Token tidak ditemukan. Harap login terlebih dahulu.');
-  }
-
-  const token = authHeader.split(' ')[1];
-
-  let decoded;
-  try {
-    decoded = jwt.verify(token, process.env.JWT_SECRET);
-  } catch (err) {
-    throw new AuthorizationError('Token tidak tidak valid atau kadaluwarsa');
-  }
-
-  return decoded.email;
-}
+const pool = require('./db');
+const { AuthorizationError } = require('./errors');
+const { getEmailFromToken } = require('./common');
 
 router.get('/banner', async (req, res, next) => {
   try {
