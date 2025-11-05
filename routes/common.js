@@ -1,6 +1,6 @@
 const pool = require('./db');
 const jwt = require('jsonwebtoken');
-const { AuthorizationError } = require('./errors');
+const { AuthorizationError, InvariantError } = require('./errors');
 
 async function getEmailFromToken(authHeader) {
   if (!authHeader) {
@@ -30,4 +30,12 @@ async function isUserExist(email) {
   return result.rowCount > 0;
 }
 
-module.exports = { getEmailFromToken, isUserExist };
+function checkRequiredField(fields) {
+  for (const [key, value] of Object.entries(fields)) {
+    if (!value) {
+      throw new InvariantError(`Parameter ${key} harus di isi`);
+    }
+  }
+}
+
+module.exports = { getEmailFromToken, isUserExist, checkRequiredField };

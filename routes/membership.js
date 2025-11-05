@@ -7,37 +7,27 @@ const express = require('express');
 const router = express.Router();
 const pool = require('./db');
 const upload = require('./upload');
-const { AuthorizationError } = require('./errors');
-const { getEmailFromToken, isUserExist } = require('./common');
+const { AuthorizationError, InvariantError } = require('./errors');
+const { getEmailFromToken, isUserExist, checkRequiredField } = require('./common');
 
 router.post('/registration', async (req, res, next) => {
-  const id = `user-${nanoid(16)}`;
-  const { email, first_name, last_name, password } = req.body;
-
-  const requiredFields = { email, first_name, last_name, password };
-
-  for (const [key, value] of Object.entries(requiredFields)) {
-    if (!value) {
-      return res.status(400).json({
-        status: 102,
-        message: `Parameter ${key} harus di isi`,
-        data: null
-      });
-    }
-  }
-
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(email)) {
-    return res.status(400).json({ status: 102, message: 'Paramter email tidak sesuai format', data: null });
-  }
-
-  if (password.length < 8) {
-    return res.status(400).json({ status: 102, message: 'Password length minimal 8 karakter', data: null });
-  }
-
-  const hashedPassword = await bcrypt.hash(password, 10);
-
   try {
+    const id = `user-${nanoid(16)}`;
+    const { email, first_name, last_name, password } = req.body;
+
+    checkRequiredField({ email, first_name, last_name, password });
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ status: 102, message: 'Paramter email tidak sesuai format', data: null });
+    }
+
+    if (password.length < 8) {
+      return res.status(400).json({ status: 102, message: 'Password length minimal 8 karakter', data: null });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     if (await isUserExist(email)) {
       return res.status(400).json({ status: 102, message: 'Email sudah terdaftar', data: null });
     }
@@ -50,35 +40,32 @@ router.post('/registration', async (req, res, next) => {
     await pool.query(query);
     return res.status(201).json({ status: 0, message: 'Registrasi berhasil silahkan login', data: null });
   } catch (err) {
+    if (err instanceof InvariantError) {
+      return res.status(err.statusCode).json({
+        status: 102,
+        message: err.message,
+        data: null
+      });
+    }
     return res.status(500).json({ status: 102, message: err.message, data: null });
   }
 });
 
 router.post('/login', async (req, res, next) => {
-  const { email, password } = req.body;
-
-  const requiredFields = { email, password };
-
-  for (const [key, value] of Object.entries(requiredFields)) {
-    if (!value) {
-      return res.status(400).json({
-        status: 102,
-        message: `Parameter ${key} harus di isi`,
-        data: null
-      });
-    }
-  }
-
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(email)) {
-    return res.status(400).json({ status: 102, message: 'Paramter email tidak sesuai format', data: null });
-  }
-
-  if (password.length < 8) {
-    return res.status(400).json({ status: 102, message: 'Password length minimal 8 karakter', data: null });
-  }
-
   try {
+    const { email, password } = req.body;
+
+    checkRequiredField({ email, password });
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ status: 102, message: 'Paramter email tidak sesuai format', data: null });
+    }
+
+    if (password.length < 8) {
+      return res.status(400).json({ status: 102, message: 'Password length minimal 8 karakter', data: null });
+    }
+
     if (!(await isUserExist(email))) {
       return res.status(400).json({ status: 103, message: 'Email tidak terdaftar', data: null });
     }
@@ -107,6 +94,14 @@ router.post('/login', async (req, res, next) => {
 
     return res.status(200).json({ status: 0, message: 'Login Sukses', data: { token } });
   } catch (err) {
+    if (err instanceof InvariantError) {
+      return res.status(err.statusCode).json({
+        status: 102,
+        message: err.message,
+        data: null
+      });
+    }
+
     return res.status(500).json({ status: 102, message: err.message, data: null });
   }
 });
@@ -198,7 +193,7 @@ router.put('/profile/update', async (req, res, next) => {
         data: null,
       });
     }
-    
+
     return res.status(500).json({
       status: 102,
       message: err.message,

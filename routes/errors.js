@@ -18,4 +18,11 @@ class AuthorizationError extends ClientError {
   }
 }
 
-module.exports = { ClientError, AuthorizationError };
+class InvariantError extends ClientError {
+  constructor(message) {
+    super(message);
+    this.name = 'InvariantError';
+  }
+}
+
+module.exports = { ClientError, AuthorizationError, InvariantError };
