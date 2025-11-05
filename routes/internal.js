@@ -17,10 +17,7 @@ router.post('/reset', async (req, res) => {
       message: 'Database reset successfully',
     });
   } catch (err) {
-    return res.status(500).json({
-      status: 102,
-      message: err.message,
-    });
+    next(err);
   }
 });
 

@@ -7,7 +7,6 @@ const express = require('express');
 const router = express.Router();
 const pool = require('./db');
 const upload = require('./upload');
-const { AuthorizationError, InvariantError } = require('./errors');
 const { getEmailFromToken, isUserExist, checkRequiredField } = require('./common');
 
 router.post('/registration', async (req, res, next) => {
@@ -40,14 +39,7 @@ router.post('/registration', async (req, res, next) => {
     await pool.query(query);
     return res.status(201).json({ status: 0, message: 'Registrasi berhasil silahkan login', data: null });
   } catch (err) {
-    if (err instanceof InvariantError) {
-      return res.status(err.statusCode).json({
-        status: 102,
-        message: err.message,
-        data: null
-      });
-    }
-    return res.status(500).json({ status: 102, message: err.message, data: null });
+    next(err);
   }
 });
 
@@ -94,15 +86,7 @@ router.post('/login', async (req, res, next) => {
 
     return res.status(200).json({ status: 0, message: 'Login Sukses', data: { token } });
   } catch (err) {
-    if (err instanceof InvariantError) {
-      return res.status(err.statusCode).json({
-        status: 102,
-        message: err.message,
-        data: null
-      });
-    }
-
-    return res.status(500).json({ status: 102, message: err.message, data: null });
+    next(err);
   }
 });
 
@@ -137,19 +121,7 @@ router.get('/profile', async (req, res, next) => {
       },
     });
   } catch (err) {
-    if (err instanceof AuthorizationError) {
-      return res.status(err.statusCode).json({
-        status: 108,
-        message: err.message,
-        data: null,
-      });
-    }
-
-    return res.status(500).json({
-      status: 102,
-      message: err.message,
-      data: null,
-    });
+    next(err);
   }
 });
 
@@ -186,19 +158,7 @@ router.put('/profile/update', async (req, res, next) => {
       },
     });
   } catch (err) {
-    if (err instanceof AuthorizationError) {
-      return res.status(err.statusCode).json({
-        status: 108,
-        message: err.message,
-        data: null,
-      });
-    }
-
-    return res.status(500).json({
-      status: 102,
-      message: err.message,
-      data: null,
-    });
+    next(err);
   }
 });
 
@@ -260,19 +220,7 @@ router.put('/profile/image', (req, res, next) => {
         },
       });
     } catch (err) {
-      if (err instanceof AuthorizationError) {
-        return res.status(err.statusCode).json({
-          status: 108,
-          message: err.message,
-          data: null,
-        });
-      }
-
-      return res.status(500).json({
-        status: 102,
-        message: err.message,
-        data: null,
-      });
+      next(err);
     }
   });
 });

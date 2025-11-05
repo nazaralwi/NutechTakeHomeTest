@@ -2,7 +2,6 @@ const { nanoid } = require('nanoid');
 let express = require('express');
 let router = express.Router();
 const pool = require('./db');
-const { AuthorizationError } = require('./errors');
 const { getEmailFromToken } = require('./common');
 
 router.get('/balance', async (req, res, next) => {
@@ -18,14 +17,7 @@ router.get('/balance', async (req, res, next) => {
     const result = await pool.query(query);
     return res.status(200).json({ status: 0, message: 'Get Balance Berhasil', data: result.rows[0] });
   } catch (err) {
-    if (err instanceof AuthorizationError) {
-      return res.status(err.statusCode).json({
-        status: 108,
-        message: err.message,
-        data: null,
-      });
-    }
-    return res.status(500).json({ status: 102, message: err.message, data: null });
+    next(err);
   }
 });
 
@@ -83,15 +75,7 @@ router.post('/topup', async (req, res, next) => {
 
     return res.status(200).json({ status: 0, message: 'Top Up Balance berhasil', data: result.rows[0] });
   } catch (err) {
-    if (err instanceof AuthorizationError) {
-      return res.status(err.statusCode).json({
-        status: 108,
-        message: err.message,
-        data: null,
-      });
-    }
-
-    return res.status(500).json({ status: 102, message: err.message, data: null });
+    next(err);
   }
 });
 
@@ -173,15 +157,7 @@ router.post('/transaction', async (req, res, next) => {
       },
     });
   } catch (err) {
-    if (err instanceof AuthorizationError) {
-      return res.status(err.statusCode).json({
-        status: 108,
-        message: err.message,
-        data: null,
-      });
-    }
-
-    return res.status(500).json({ status: 102, message: err.message, data: null });
+    next(err);
   }
 });
 
@@ -228,15 +204,7 @@ router.get('/transaction/history', async (req, res, next) => {
       records: limitedTransaction,
     });
   } catch (err) {
-    if (err instanceof AuthorizationError) {
-      return res.status(err.statusCode).json({
-        status: 108,
-        message: err.message,
-        data: null,
-      });
-    }
-
-    return res.status(500).json({ status: 102, message: err.message, data: null });
+    next(err);
   }
 });
 
