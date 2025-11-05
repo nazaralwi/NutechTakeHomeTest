@@ -293,7 +293,7 @@ router.put('/profile/image', (req, res, next) => {
       }
 
       const imagePath = req.file.path;
-      const imageFileName = imagePath.split('/')[1];
+      const imageFileName = path.basename(imagePath);
 
       const authHeader = req.headers.authorization;
 

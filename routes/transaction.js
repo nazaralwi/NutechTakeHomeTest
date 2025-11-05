@@ -275,7 +275,7 @@ router.get('/transaction/history', async (req, res, next) => {
       .map((transaction) => (
         {
           invoice_number: transaction.invoice_number,
-          transaction_type: transaction.service_name,
+          transaction_type: transaction.transaction_type,
           description: transaction.description,
           total_amount: transaction.total_amount,
           created_on: transaction.created_on,
