@@ -10,6 +10,7 @@ var usersRouter = require('./routes/users');
 let membershipRouter = require('./routes/membership');
 let informationRouter = require('./routes/information');
 let transactionRouter = require('./routes/transaction');
+const internalRouter = require('./routes/internal');
 
 var app = express();
 
@@ -28,6 +29,10 @@ app.use('/users', usersRouter);
 app.use('/', membershipRouter);
 app.use('/', informationRouter);
 app.use('/', transactionRouter);
+
+if (process.env.NODE_ENV === 'development') {
+  app.use('/internal', internalRouter);
+}
 
 app.use('/', express.static(path.join(process.cwd(), 'uploads')));
 
