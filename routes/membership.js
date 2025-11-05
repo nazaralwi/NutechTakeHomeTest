@@ -92,9 +92,9 @@ router.post('/registration', async (req, res, next) => {
     };
 
     await pool.query(query);
-    res.status(201).json({ status: 0, message: 'Registrasi berhasil silahkan login', data: null });
+    return res.status(201).json({ status: 0, message: 'Registrasi berhasil silahkan login', data: null });
   } catch (err) {
-    res.status(500).json({ status: 102, message: err.message, data: null });
+    return res.status(500).json({ status: 102, message: err.message, data: null });
   }
 });
 
@@ -149,9 +149,9 @@ router.post('/login', async (req, res, next) => {
       expiresIn: process.env.JWT_EXPIRES_IN || '1h',
     });
 
-    res.status(200).json({ status: 0, message: 'Login Sukses', data: { token } });
+    return res.status(200).json({ status: 0, message: 'Login Sukses', data: { token } });
   } catch (err) {
-    res.status(500).json({ status: 102, message: err.message, data: null });
+    return res.status(500).json({ status: 102, message: err.message, data: null });
   }
 });
 
@@ -189,7 +189,7 @@ router.get('/profile', async (req, res, next) => {
     }
 
     const user = result.rows[0];
-    res.status(200).json({
+    return res.status(200).json({
       status: 0,
       message: 'Sukses',
       data: {
@@ -200,7 +200,7 @@ router.get('/profile', async (req, res, next) => {
       },
     });
   } catch (err) {
-    res.status(500).json({
+    return res.status(500).json({
       status: 102,
       message: err.message,
       data: null,
@@ -244,7 +244,7 @@ router.put('/profile/update', async (req, res, next) => {
     }
     const user = result.rows[0];
 
-    res.status(200).json({
+    return res.status(200).json({
       status: 0,
       message: 'Update Pofile berhasil',
       data: {
@@ -255,7 +255,7 @@ router.put('/profile/update', async (req, res, next) => {
       },
     });
   } catch (err) {
-    res.status(500).json({
+    return res.status(500).json({
       status: 102,
       message: err.message,
       data: null,
@@ -324,7 +324,7 @@ router.put('/profile/image', (req, res, next) => {
       }
       const user = result.rows[0];
 
-      res.status(200).json({
+      return res.status(200).json({
         status: 0,
         message: 'Update Profile Image berhasil',
         data: {
@@ -335,7 +335,7 @@ router.put('/profile/image', (req, res, next) => {
         },
       });
     } catch (err) {
-      res.status(500).json({
+      return res.status(500).json({
         status: 102,
         message: err.message,
         data: null,

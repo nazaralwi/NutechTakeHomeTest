@@ -12,12 +12,12 @@ router.post('/reset', async (req, res) => {
 
     await pool.query('TRUNCATE users, transactions');
 
-    res.status(200).json({
+    return res.status(200).json({
       status: 0,
       message: 'Database reset successfully',
     });
   } catch (err) {
-    res.status(500).json({
+    return res.status(500).json({
       status: 102,
       message: err.message,
     });

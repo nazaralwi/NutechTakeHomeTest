@@ -1,7 +1,7 @@
 const { nanoid } = require('nanoid');
-const express = require('express');
+let express = require('express');
 const jwt = require('jsonwebtoken');
-const router = express.Router();
+let router = express.Router();
 const pool = require('./db.js');
 
 router.get('/balance', async (req, res, next) => {
@@ -29,7 +29,10 @@ router.get('/balance', async (req, res, next) => {
       });
     }
 
+    console.log('decoded ' + decoded);
     const { email } = decoded;
+
+    console.log('email ' + email);
 
     const query = {
       text: 'SELECT balance FROM users WHERE email = $1',
@@ -37,9 +40,9 @@ router.get('/balance', async (req, res, next) => {
     };
 
     const result = await pool.query(query);
-    res.status(200).json({ status: 0, message: 'Get Balance Berhasil', data: result.rows[0] });
+    return res.status(200).json({ status: 0, message: 'Get Balance Berhasil', data: result.rows[0] });
   } catch (err) {
-    res.status(500).json({ status: 102, message: err.message, data: null });
+    return res.status(500).json({ status: 102, message: err.message, data: null });
   }
 });
 
@@ -117,9 +120,9 @@ router.post('/topup', async (req, res, next) => {
 
     await pool.query(recordTransactionQuery);
 
-    res.status(200).json({ status: 0, message: 'Top Up Balance berhasil', data: result.rows[0] });
+    return res.status(200).json({ status: 0, message: 'Top Up Balance berhasil', data: result.rows[0] });
   } catch (err) {
-    res.status(500).json({ status: 102, message: err.message, data: null });
+    return res.status(500).json({ status: 102, message: err.message, data: null });
   }
 });
 
@@ -210,7 +213,7 @@ router.post('/transaction', async (req, res, next) => {
 
     await pool.query(recordTransactionQuery);
 
-    res.status(200).json({ 
+    return res.status(200).json({ 
       status: 0, 
       message: 'Transaksi berhasil', 
       data: {
@@ -223,7 +226,7 @@ router.post('/transaction', async (req, res, next) => {
       },
     });
   } catch (err) {
-    res.status(500).json({ status: 102, message: err.message, data: null });
+    return res.status(500).json({ status: 102, message: err.message, data: null });
   }
 });
 
@@ -284,7 +287,7 @@ router.get('/transaction/history', async (req, res, next) => {
       ? filteredTransactions.slice(offset, offset + limit)
       : filteredTransactions.slice(offset);
 
-    res.status(200).json({ 
+    return res.status(200).json({ 
       status: 0, 
       message: 'Get History Berhasil', 
       offset: offset,
@@ -292,7 +295,7 @@ router.get('/transaction/history', async (req, res, next) => {
       records: limitedTransaction,
     });
   } catch (err) {
-    res.status(500).json({ status: 102, message: err.message, data: null });
+    return res.status(500).json({ status: 102, message: err.message, data: null });
   }
 });
 
