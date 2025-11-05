@@ -4,8 +4,8 @@ const jwt = require('jsonwebtoken');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
-let express = require('express');
-let router = express.Router();
+const express = require('express');
+const router = express.Router();
 const pool = require('./db.js');
 
 async function isUserExist(email) {
@@ -15,8 +15,6 @@ async function isUserExist(email) {
   };
 
   const result = await pool.query(query);
-
-  console.log('users rowCount ' + result.rowCount);
 
   return result.rowCount > 0;
 }
@@ -174,7 +172,6 @@ router.get('/profile', async (req, res, next) => {
       });
     }
 
-    console.log('decoded ' + decoded);
     const { email } = decoded;
 
     const query = {
@@ -229,7 +226,6 @@ router.put('/profile/update', async (req, res, next) => {
       });
     }
 
-    console.log('decoded ' + decoded);
     const { email } = decoded;
 
     const query = {
@@ -310,7 +306,6 @@ router.put('/profile/image', (req, res, next) => {
         });
       }
 
-      console.log('decoded ' + decoded);
       const { email } = decoded;
 
       const query = {

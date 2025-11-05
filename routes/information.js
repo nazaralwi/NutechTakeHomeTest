@@ -1,6 +1,6 @@
-let express = require('express');
+const express = require('express');
 const jwt = require('jsonwebtoken');
-let router = express.Router();
+const router = express.Router();
 const pool = require('./db.js');
 
 router.get('/banner', async (req, res, next) => {
@@ -37,7 +37,6 @@ router.get('/services', async (req, res, next) => {
       });
     }
 
-    console.log('decoded ' + decoded);
     const { email } = decoded;
 
     const result = await pool.query('SELECT service_code, service_name, service_icon, service_tariff FROM services');

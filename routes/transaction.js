@@ -1,7 +1,7 @@
 const { nanoid } = require('nanoid');
-let express = require('express');
+const express = require('express');
 const jwt = require('jsonwebtoken');
-let router = express.Router();
+const router = express.Router();
 const pool = require('./db.js');
 
 router.get('/balance', async (req, res, next) => {
@@ -29,10 +29,7 @@ router.get('/balance', async (req, res, next) => {
       });
     }
 
-    console.log('decoded ' + decoded);
     const { email } = decoded;
-
-    console.log('email ' + email);
 
     const query = {
       text: 'SELECT balance FROM users WHERE email = $1',
