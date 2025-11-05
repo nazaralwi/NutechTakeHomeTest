@@ -1,13 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const pool = require('./db');
+const { ForbiddenError } = require('./errors');
 
 router.post('/reset', async (req, res) => {
   try {
     const auth = req.headers['x-internal-secret'];
 
     if (auth !== process.env.INTERNAL_KEY) {
-      return res.status(403).json({ message: 'Forbidden' });
+      throw new ForbiddenError('Forbidden');
     }
 
     await pool.query('TRUNCATE users, transactions');
