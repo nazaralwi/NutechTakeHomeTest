@@ -3,6 +3,7 @@ let express = require('express');
 let router = express.Router();
 const pool = require('./db');
 const { getEmailFromToken } = require('./common');
+const { InvariantError } = require('./errors');
 
 router.get('/balance', async (req, res, next) => {
   try {
@@ -35,11 +36,7 @@ router.post('/topup', async (req, res, next) => {
     const email = await getEmailFromToken(authHeader);
     
     if (typeof top_up_amount !== 'number' || top_up_amount < 0) {
-      return res.status(400).json({
-        status: 102,
-        message: 'Paramter amount hanya boleh angka dan tidak boleh lebih kecil dari 0',
-        data: null,
-      });
+      throw new InvariantError('Paramter amount hanya boleh angka dan tidak boleh lebih kecil dari 0');
     }
 
     const getUserIdQuery = {
@@ -99,21 +96,13 @@ router.post('/transaction', async (req, res, next) => {
     const service = services.find((service) => service.service_code === service_code);
 
     if (!service) {
-      return res.status(400).json({
-        status: 102,
-        message: 'Service atau Layanan tidak ditemukan',
-        data: null,
-      });
+      throw new InvariantError('Service atau Layanan tidak ditemukan');
     }
 
     const isBalanceSufficient = user.balance >= service.service_tariff;
 
     if (!isBalanceSufficient) {
-      return res.status(400).json({
-        status: 102,
-        message: 'Saldo tidak cukup',
-        data: null,
-      });
+      throw new InvariantError('Saldo tidak cukup');
     }
 
     const reduceBalanceQuery = {

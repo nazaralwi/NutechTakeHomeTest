@@ -8,6 +8,7 @@ const router = express.Router();
 const pool = require('./db');
 const upload = require('./upload');
 const { getEmailFromToken, isUserExist, checkRequiredField } = require('./common');
+const { InvariantError } = require('./errors');
 
 router.post('/registration', async (req, res, next) => {
   try {
@@ -18,17 +19,17 @@ router.post('/registration', async (req, res, next) => {
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      return res.status(400).json({ status: 102, message: 'Paramter email tidak sesuai format', data: null });
+      throw new InvariantError('Paramter email tidak sesuai format');
     }
 
     if (password.length < 8) {
-      return res.status(400).json({ status: 102, message: 'Password length minimal 8 karakter', data: null });
+      throw new InvariantError('Password length minimal 8 karakter');
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
     if (await isUserExist(email)) {
-      return res.status(400).json({ status: 102, message: 'Email sudah terdaftar', data: null });
+      throw new InvariantError('Email sudah terdaftar');
     }
 
     const query = {
@@ -51,11 +52,11 @@ router.post('/login', async (req, res, next) => {
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      return res.status(400).json({ status: 102, message: 'Paramter email tidak sesuai format', data: null });
+      throw new InvariantError('Paramter email tidak sesuai format');
     }
 
     if (password.length < 8) {
-      return res.status(400).json({ status: 102, message: 'Password length minimal 8 karakter', data: null });
+      throw new InvariantError('Password length minimal 8 karakter');
     }
 
     if (!(await isUserExist(email))) {
@@ -166,25 +167,13 @@ router.put('/profile/image', (req, res, next) => {
   upload.single('file')(req, res, async (err) => {
     try {
       if (err instanceof multer.MulterError) {
-        return res.status(400).json({
-          status: 102,
-          message: err.message,
-          data: null,
-        });
+        throw new InvariantError(err.message);
       } else if (err) {
-        return res.status(400).json({
-          status: 102,
-          message: err.message,
-          data: null,
-        });
+        throw new InvariantError(err.message);
       }
 
       if (!req.file) {
-        return res.status(400).json({
-          status: 102,
-          message: 'File tidak ditemukan',
-          data: null,
-        });
+        throw new InvariantError('File tidak ditemukan');
       }
 
       const imagePath = req.file.path;
