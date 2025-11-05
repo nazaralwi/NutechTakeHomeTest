@@ -2,24 +2,20 @@ const { nanoid } = require('nanoid');
 const express = require('express');
 const router = express.Router();
 const pool = require('../utils/db');
-const { getEmailFromToken, generateInvoiceNumber } = require('../utils/common');
+const { getEmailByToken, generateInvoiceNumber, getUserByEmail } = require('../utils/common');
 const { InvariantError } = require('../utils/errors');
 
 router.get('/balance', async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
-    const email = await getEmailFromToken(authHeader);
+    const email = await getEmailByToken(authHeader);
 
-    const query = {
-      text: 'SELECT balance FROM users WHERE email = $1',
-      values: [email],
-    };
-    const result = await pool.query(query);
+    const user = await getUserByEmail(email, 'balance');
 
     return res.status(200).json({
       status: 0,
       message: 'Get Balance Berhasil',
-      data: result.rows[0],
+      data: user,
     });
   } catch (err) {
     next(err);
@@ -30,20 +26,15 @@ router.post('/topup', async (req, res, next) => {
   try {
     const { top_up_amount } = req.body;
     const authHeader = req.headers.authorization;
-    const email = await getEmailFromToken(authHeader);
+    const email = await getEmailByToken(authHeader);
+    const user = await getUserByEmail(email, 'id');
 
     if (typeof top_up_amount !== 'number' || top_up_amount < 0) {
       throw new InvariantError(
         'Paramter amount hanya boleh angka dan tidak boleh lebih kecil dari 0'
       );
     }
-
-    const getUserIdQuery = {
-      text: 'SELECT id FROM users WHERE email = $1',
-      values: [email],
-    };
-    const userId = (await pool.query(getUserIdQuery)).rows[0].id;
-
+    
     const topUpBalanceQuery = {
       text: 'UPDATE users SET balance = balance + $1 WHERE email = $2 RETURNING balance',
       values: [top_up_amount, email],
@@ -62,7 +53,7 @@ router.post('/topup', async (req, res, next) => {
         'Top Up balance',
         top_up_amount,
         new Date().toISOString(),
-        userId,
+        user.id,
       ],
     };
     await pool.query(recordTransactionQuery);
@@ -81,13 +72,8 @@ router.post('/transaction', async (req, res, next) => {
   try {
     const { service_code } = req.body;
     const authHeader = req.headers.authorization;
-    const email = await getEmailFromToken(authHeader);
-
-    const getUserQuery = {
-      text: 'SELECT id, balance FROM users WHERE email = $1',
-      values: [email],
-    };
-    const user = (await pool.query(getUserQuery)).rows[0];
+    const email = await getEmailByToken(authHeader);
+    const user = await getUserByEmail(email, 'id, balance');
 
     const getServicesQuery = {
       text: 'SELECT * FROM services',
@@ -158,13 +144,8 @@ router.get('/transaction/history', async (req, res, next) => {
     const { offset: offsetStr, limit: limitStr } = req.query;
     const [offset, limit] = [Number(offsetStr) || 0, Number(limitStr) || 0];
     const authHeader = req.headers.authorization;
-    const email = await getEmailFromToken(authHeader);
-
-    const getUserQuery = {
-      text: 'SELECT id FROM users WHERE email = $1',
-      values: [email],
-    };
-    const user = (await pool.query(getUserQuery)).rows[0];
+    const email = await getEmailByToken(authHeader);
+    const user = await getUserByEmail(email, 'id');
 
     const getTransactionQuery = {
       text: 'SELECT * FROM transactions WHERE user_id = $1',

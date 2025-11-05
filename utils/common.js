@@ -2,7 +2,7 @@ const pool = require('./db');
 const jwt = require('jsonwebtoken');
 const { TokenError, InvariantError } = require('./errors');
 
-const getEmailFromToken = async (authHeader) => {
+const getEmailByToken = async (authHeader) => {
   if (!authHeader) {
     throw new TokenError('Token tidak ditemukan. Harap login terlebih dahulu.');
   }
@@ -17,6 +17,15 @@ const getEmailFromToken = async (authHeader) => {
   }
 
   return decoded.email;
+};
+
+const getUserByEmail = async (email, fields = '*') => {
+  const query = {
+    text: `SELECT ${fields} FROM users WHERE email = $1`,
+    values: [email],
+  };
+  const result = await pool.query(query);
+  return result.rows[0];
 };
 
 const isUserExist = async (email) => {
@@ -59,7 +68,8 @@ const generateInvoiceNumber = () => {
 };
 
 module.exports = {
-  getEmailFromToken,
+  getEmailByToken,
+  getUserByEmail,
   isUserExist,
   checkRequiredField,
   validateEmail,

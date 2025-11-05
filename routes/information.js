@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const pool = require('../utils/db');
-const { getEmailFromToken } = require('../utils/common');
+const { getEmailByToken } = require('../utils/common');
 
 router.get('/banner', async (req, res, next) => {
   try {
@@ -21,7 +21,7 @@ router.get('/banner', async (req, res, next) => {
 router.get('/services', async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
-    const email = await getEmailFromToken(authHeader);
+    const email = await getEmailByToken(authHeader);
 
     const result = await pool.query(
       'SELECT service_code, service_name, service_icon, service_tariff FROM services'

@@ -8,7 +8,7 @@ const router = express.Router();
 const pool = require('../utils/db');
 const upload = require('../utils/upload');
 const {
-  getEmailFromToken,
+  getEmailByToken,
   isUserExist,
   checkRequiredField,
   validateEmail,
@@ -85,7 +85,7 @@ router.post('/login', async (req, res, next) => {
 router.get('/profile', async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
-    const email = await getEmailFromToken(authHeader);
+    const email = await getEmailByToken(authHeader);
 
     const query = {
       text: 'SELECT email, first_name, last_name, profile_image FROM users WHERE email = $1',
@@ -116,7 +116,7 @@ router.put('/profile/update', async (req, res, next) => {
   try {
     const { first_name, last_name } = req.body;
     const authHeader = req.headers.authorization;
-    const email = await getEmailFromToken(authHeader);
+    const email = await getEmailByToken(authHeader);
 
     const query = {
       text: 'UPDATE users SET first_name = $1, last_name = $2 WHERE email = $3 RETURNING email, first_name, last_name, profile_image',
@@ -160,7 +160,7 @@ router.put('/profile/image', (req, res, next) => {
       const imageFileName = path.basename(imagePath);
 
       const authHeader = req.headers.authorization;
-      const email = await getEmailFromToken(authHeader);
+      const email = await getEmailByToken(authHeader);
 
       const query = {
         text: 'UPDATE users SET profile_image = $1 WHERE email = $2 RETURNING email, first_name, last_name, profile_image',
