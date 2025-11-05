@@ -8,18 +8,7 @@ const router = express.Router();
 const pool = require('./db');
 const upload = require('./upload');
 const { AuthorizationError } = require('./errors');
-const { getEmailFromToken } = require('./common');
-
-async function isUserExist(email) {
-  const query = {
-    text: 'SELECT * FROM users WHERE email = $1',
-    values: [email],
-  };
-
-  const result = await pool.query(query);
-
-  return result.rowCount > 0;
-}
+const { getEmailFromToken, isUserExist } = require('./common');
 
 router.post('/registration', async (req, res, next) => {
   const id = `user-${nanoid(16)}`;

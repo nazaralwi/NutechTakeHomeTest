@@ -1,3 +1,4 @@
+const pool = require('./db');
 const jwt = require('jsonwebtoken');
 const { AuthorizationError } = require('./errors');
 
@@ -18,4 +19,15 @@ async function getEmailFromToken(authHeader) {
   return decoded.email;
 }
 
-module.exports = { getEmailFromToken };
+async function isUserExist(email) {
+  const query = {
+    text: 'SELECT * FROM users WHERE email = $1',
+    values: [email],
+  };
+
+  const result = await pool.query(query);
+
+  return result.rowCount > 0;
+}
+
+module.exports = { getEmailFromToken, isUserExist };
