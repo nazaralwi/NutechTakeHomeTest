@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "75902b50-5841-4b93-ab43-07066452f74a",
+		"_postman_id": "4a80b71a-fc70-4235-9619-895c6cea0593",
 		"name": "PPOB API Test",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
 		"_exporter_id": "29988340"
@@ -35,7 +35,7 @@
 										"type": "text"
 									}
 								],
-								"url": "http://localhost:{{port}}/internal/reset"
+								"url": "{{baseUrl}}/internal/reset"
 							},
 							"response": []
 						}
@@ -86,7 +86,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:{{port}}/registration"
+						"url": "{{baseUrl}}/registration"
 					},
 					"response": []
 				},
@@ -135,7 +135,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:{{port}}/registration"
+						"url": "{{baseUrl}}/registration"
 					},
 					"response": []
 				},
@@ -184,7 +184,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:{{port}}/registration"
+						"url": "{{baseUrl}}/registration"
 					},
 					"response": []
 				},
@@ -233,7 +233,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:{{port}}/registration"
+						"url": "{{baseUrl}}/registration"
 					},
 					"response": []
 				},
@@ -282,7 +282,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:{{port}}/registration"
+						"url": "{{baseUrl}}/registration"
 					},
 					"response": []
 				},
@@ -331,7 +331,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:{{port}}/registration"
+						"url": "{{baseUrl}}/registration"
 					},
 					"response": []
 				},
@@ -380,7 +380,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:{{port}}/registration"
+						"url": "{{baseUrl}}/registration"
 					},
 					"response": []
 				},
@@ -429,7 +429,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:{{port}}/registration"
+						"url": "{{baseUrl}}/registration"
 					},
 					"response": []
 				}
@@ -464,7 +464,7 @@
 										"type": "text"
 									}
 								],
-								"url": "http://localhost:{{port}}/internal/reset"
+								"url": "{{baseUrl}}/internal/reset"
 							},
 							"response": []
 						},
@@ -494,7 +494,7 @@
 										}
 									}
 								},
-								"url": "http://localhost:{{port}}/registration"
+								"url": "{{baseUrl}}/registration"
 							},
 							"response": []
 						}
@@ -545,7 +545,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:{{port}}/login"
+						"url": "{{baseUrl}}/login"
 					},
 					"response": []
 				},
@@ -594,7 +594,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:{{port}}/login"
+						"url": "{{baseUrl}}/login"
 					},
 					"response": []
 				},
@@ -643,7 +643,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:{{port}}/login"
+						"url": "{{baseUrl}}/login"
 					},
 					"response": []
 				},
@@ -692,7 +692,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:{{port}}/login"
+						"url": "{{baseUrl}}/login"
 					},
 					"response": []
 				},
@@ -741,7 +741,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:{{port}}/login"
+						"url": "{{baseUrl}}/login"
 					},
 					"response": []
 				},
@@ -794,7 +794,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:{{port}}/login"
+						"url": "{{baseUrl}}/login"
 					},
 					"response": []
 				}
@@ -829,7 +829,7 @@
 										"type": "text"
 									}
 								],
-								"url": "http://localhost:{{port}}/internal/reset"
+								"url": "{{baseUrl}}/internal/reset"
 							},
 							"response": []
 						},
@@ -859,7 +859,7 @@
 										}
 									}
 								},
-								"url": "http://localhost:{{port}}/registration"
+								"url": "{{baseUrl}}/registration"
 							},
 							"response": []
 						},
@@ -890,7 +890,7 @@
 										}
 									}
 								},
-								"url": "http://localhost:{{port}}/login"
+								"url": "{{baseUrl}}/login"
 							},
 							"response": []
 						}
@@ -938,7 +938,7 @@
 						},
 						"method": "GET",
 						"header": [],
-						"url": "http://localhost:{{port}}/profile"
+						"url": "{{baseUrl}}/profile"
 					},
 					"response": []
 				},
@@ -988,7 +988,7 @@
 						},
 						"method": "GET",
 						"header": [],
-						"url": "http://localhost:{{port}}/profile"
+						"url": "{{baseUrl}}/profile"
 					},
 					"response": []
 				}
@@ -1023,7 +1023,7 @@
 										"type": "text"
 									}
 								],
-								"url": "http://localhost:{{port}}/internal/reset"
+								"url": "{{baseUrl}}/internal/reset"
 							},
 							"response": []
 						},
@@ -1053,7 +1053,7 @@
 										}
 									}
 								},
-								"url": "http://localhost:{{port}}/registration"
+								"url": "{{baseUrl}}/registration"
 							},
 							"response": []
 						},
@@ -1084,7 +1084,7 @@
 										}
 									}
 								},
-								"url": "http://localhost:{{port}}/login"
+								"url": "{{baseUrl}}/login"
 							},
 							"response": []
 						}
@@ -1141,7 +1141,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:{{port}}/profile/update"
+						"url": "{{baseUrl}}/profile/update"
 					},
 					"response": []
 				},
@@ -1200,7 +1200,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:{{port}}/profile/update"
+						"url": "{{baseUrl}}/profile/update"
 					},
 					"response": []
 				}
@@ -1235,7 +1235,7 @@
 										"type": "text"
 									}
 								],
-								"url": "http://localhost:{{port}}/internal/reset"
+								"url": "{{baseUrl}}/internal/reset"
 							},
 							"response": []
 						},
@@ -1265,7 +1265,7 @@
 										}
 									}
 								},
-								"url": "http://localhost:{{port}}/registration"
+								"url": "{{baseUrl}}/registration"
 							},
 							"response": []
 						},
@@ -1296,7 +1296,7 @@
 										}
 									}
 								},
-								"url": "http://localhost:{{port}}/login"
+								"url": "{{baseUrl}}/login"
 							},
 							"response": []
 						}
@@ -1354,7 +1354,7 @@
 								}
 							]
 						},
-						"url": "http://localhost:{{port}}/profile/image"
+						"url": "{{baseUrl}}/profile/image"
 					},
 					"response": []
 				},
@@ -1410,7 +1410,7 @@
 								}
 							]
 						},
-						"url": "http://localhost:{{port}}/profile/image"
+						"url": "{{baseUrl}}/profile/image"
 					},
 					"response": []
 				},
@@ -1470,7 +1470,7 @@
 								}
 							]
 						},
-						"url": "http://localhost:{{port}}/profile/image"
+						"url": "{{baseUrl}}/profile/image"
 					},
 					"response": []
 				}
@@ -1505,7 +1505,7 @@
 										"type": "text"
 									}
 								],
-								"url": "http://localhost:{{port}}/internal/reset"
+								"url": "{{baseUrl}}/internal/reset"
 							},
 							"response": []
 						}
@@ -1550,7 +1550,7 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "http://localhost:{{port}}/banner"
+						"url": "{{baseUrl}}/banner"
 					},
 					"response": []
 				}
@@ -1585,7 +1585,7 @@
 										"type": "text"
 									}
 								],
-								"url": "http://localhost:{{port}}/internal/reset"
+								"url": "{{baseUrl}}/internal/reset"
 							},
 							"response": []
 						},
@@ -1615,7 +1615,7 @@
 										}
 									}
 								},
-								"url": "http://localhost:{{port}}/registration"
+								"url": "{{baseUrl}}/registration"
 							},
 							"response": []
 						},
@@ -1646,7 +1646,7 @@
 										}
 									}
 								},
-								"url": "http://localhost:{{port}}/login"
+								"url": "{{baseUrl}}/login"
 							},
 							"response": []
 						}
@@ -1694,7 +1694,7 @@
 						},
 						"method": "GET",
 						"header": [],
-						"url": "http://localhost:{{port}}/services"
+						"url": "{{baseUrl}}/services"
 					},
 					"response": []
 				},
@@ -1744,7 +1744,7 @@
 						},
 						"method": "GET",
 						"header": [],
-						"url": "http://localhost:{{port}}/services"
+						"url": "{{baseUrl}}/services"
 					},
 					"response": []
 				}
@@ -1779,7 +1779,7 @@
 										"type": "text"
 									}
 								],
-								"url": "http://localhost:{{port}}/internal/reset"
+								"url": "{{baseUrl}}/internal/reset"
 							},
 							"response": []
 						},
@@ -1809,7 +1809,7 @@
 										}
 									}
 								},
-								"url": "http://localhost:{{port}}/registration"
+								"url": "{{baseUrl}}/registration"
 							},
 							"response": []
 						},
@@ -1840,7 +1840,7 @@
 										}
 									}
 								},
-								"url": "http://localhost:{{port}}/login"
+								"url": "{{baseUrl}}/login"
 							},
 							"response": []
 						}
@@ -1888,7 +1888,7 @@
 						},
 						"method": "GET",
 						"header": [],
-						"url": "http://localhost:{{port}}/balance"
+						"url": "{{baseUrl}}/balance"
 					},
 					"response": []
 				},
@@ -1935,7 +1935,7 @@
 						},
 						"method": "GET",
 						"header": [],
-						"url": "http://localhost:{{port}}/balance"
+						"url": "{{baseUrl}}/balance"
 					},
 					"response": []
 				}
@@ -1970,7 +1970,7 @@
 										"type": "text"
 									}
 								],
-								"url": "http://localhost:{{port}}/internal/reset"
+								"url": "{{baseUrl}}/internal/reset"
 							},
 							"response": []
 						},
@@ -2000,7 +2000,7 @@
 										}
 									}
 								},
-								"url": "http://localhost:{{port}}/registration"
+								"url": "{{baseUrl}}/registration"
 							},
 							"response": []
 						},
@@ -2031,7 +2031,7 @@
 										}
 									}
 								},
-								"url": "http://localhost:{{port}}/login"
+								"url": "{{baseUrl}}/login"
 							},
 							"response": []
 						}
@@ -2088,7 +2088,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:{{port}}/topup"
+						"url": "{{baseUrl}}/topup"
 					},
 					"response": []
 				},
@@ -2143,7 +2143,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:{{port}}/topup"
+						"url": "{{baseUrl}}/topup"
 					},
 					"response": []
 				},
@@ -2198,7 +2198,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:{{port}}/topup"
+						"url": "{{baseUrl}}/topup"
 					},
 					"response": []
 				},
@@ -2254,7 +2254,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:{{port}}/topup"
+						"url": "{{baseUrl}}/topup"
 					},
 					"response": []
 				}
@@ -2289,7 +2289,7 @@
 										"type": "text"
 									}
 								],
-								"url": "http://localhost:{{port}}/internal/reset"
+								"url": "{{baseUrl}}/internal/reset"
 							},
 							"response": []
 						},
@@ -2319,7 +2319,7 @@
 										}
 									}
 								},
-								"url": "http://localhost:{{port}}/registration"
+								"url": "{{baseUrl}}/registration"
 							},
 							"response": []
 						},
@@ -2350,7 +2350,7 @@
 										}
 									}
 								},
-								"url": "http://localhost:{{port}}/login"
+								"url": "{{baseUrl}}/login"
 							},
 							"response": []
 						},
@@ -2386,7 +2386,7 @@
 										}
 									}
 								},
-								"url": "http://localhost:{{port}}/topup"
+								"url": "{{baseUrl}}/topup"
 							},
 							"response": []
 						}
@@ -2443,7 +2443,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:{{port}}/transaction"
+						"url": "{{baseUrl}}/transaction"
 					},
 					"response": []
 				},
@@ -2498,7 +2498,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:{{port}}/transaction"
+						"url": "{{baseUrl}}/transaction"
 					},
 					"response": []
 				},
@@ -2559,7 +2559,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:{{port}}/transaction"
+						"url": "{{baseUrl}}/transaction"
 					},
 					"response": []
 				},
@@ -2620,7 +2620,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:{{port}}/transaction"
+						"url": "{{baseUrl}}/transaction"
 					},
 					"response": []
 				},
@@ -2681,7 +2681,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:{{port}}/transaction"
+						"url": "{{baseUrl}}/transaction"
 					},
 					"response": []
 				}
@@ -2716,7 +2716,7 @@
 										"type": "text"
 									}
 								],
-								"url": "http://localhost:{{port}}/internal/reset"
+								"url": "{{baseUrl}}/internal/reset"
 							},
 							"response": []
 						},
@@ -2746,7 +2746,7 @@
 										}
 									}
 								},
-								"url": "http://localhost:{{port}}/registration"
+								"url": "{{baseUrl}}/registration"
 							},
 							"response": []
 						},
@@ -2777,7 +2777,7 @@
 										}
 									}
 								},
-								"url": "http://localhost:{{port}}/login"
+								"url": "{{baseUrl}}/login"
 							},
 							"response": []
 						}
@@ -2834,7 +2834,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:{{port}}/transaction"
+						"url": "{{baseUrl}}/transaction"
 					},
 					"response": []
 				},
@@ -2889,7 +2889,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:{{port}}/transaction"
+						"url": "{{baseUrl}}/transaction"
 					},
 					"response": []
 				},
@@ -2944,7 +2944,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:{{port}}/transaction"
+						"url": "{{baseUrl}}/transaction"
 					},
 					"response": []
 				},
@@ -2999,7 +2999,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:{{port}}/transaction"
+						"url": "{{baseUrl}}/transaction"
 					},
 					"response": []
 				},
@@ -3054,7 +3054,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:{{port}}/transaction"
+						"url": "{{baseUrl}}/transaction"
 					},
 					"response": []
 				}
@@ -3089,7 +3089,7 @@
 										"type": "text"
 									}
 								],
-								"url": "http://localhost:{{port}}/internal/reset"
+								"url": "{{baseUrl}}/internal/reset"
 							},
 							"response": []
 						},
@@ -3119,7 +3119,7 @@
 										}
 									}
 								},
-								"url": "http://localhost:{{port}}/registration"
+								"url": "{{baseUrl}}/registration"
 							},
 							"response": []
 						},
@@ -3150,7 +3150,7 @@
 										}
 									}
 								},
-								"url": "http://localhost:{{port}}/login"
+								"url": "{{baseUrl}}/login"
 							},
 							"response": []
 						},
@@ -3186,7 +3186,7 @@
 										}
 									}
 								},
-								"url": "http://localhost:{{port}}/topup"
+								"url": "{{baseUrl}}/topup"
 							},
 							"response": []
 						},
@@ -3222,7 +3222,7 @@
 										}
 									}
 								},
-								"url": "http://localhost:{{port}}/transaction"
+								"url": "{{baseUrl}}/transaction"
 							},
 							"response": []
 						},
@@ -3258,7 +3258,7 @@
 										}
 									}
 								},
-								"url": "http://localhost:{{port}}/transaction"
+								"url": "{{baseUrl}}/transaction"
 							},
 							"response": []
 						},
@@ -3294,7 +3294,7 @@
 										}
 									}
 								},
-								"url": "http://localhost:{{port}}/transaction"
+								"url": "{{baseUrl}}/transaction"
 							},
 							"response": []
 						}
@@ -3343,12 +3343,10 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:{{port}}/transaction/history?limit=1",
-							"protocol": "http",
+							"raw": "{{baseUrl}}/transaction/history?limit=1",
 							"host": [
-								"localhost"
+								"{{baseUrl}}"
 							],
-							"port": "{{port}}",
 							"path": [
 								"transaction",
 								"history"
@@ -3418,12 +3416,10 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:{{port}}/transaction/history?limit=1",
-							"protocol": "http",
+							"raw": "{{baseUrl}}/transaction/history?limit=1",
 							"host": [
-								"localhost"
+								"{{baseUrl}}"
 							],
-							"port": "{{port}}",
 							"path": [
 								"transaction",
 								"history"

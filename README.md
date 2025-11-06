@@ -67,6 +67,9 @@ INTERNAL_KEY=your_internal_api_key # Kunci khusus untuk endpoint internal (misal
 ```
 
 ### 4. Jalankan Migration
+Patikan Anda sudah memasang [PostgreSQL](https://www.postgresql.org/download/) di komputer.
+
+Jalankan perintah berikut.
 ```
 npm run migrate up
 ```
@@ -135,6 +138,9 @@ Ketika membangun PPBO RESTful API, tentu Anda perlu menguji untuk memastikan API
 5. Setelah file berhasil dipilih, klik tombol Import.
 6. Sekarang, PPOB API Test Collection dan PPOB API Environment akan muncul di Postman Anda.
 7. Pastikan untuk mengaktifkan Environment PPOB API sebelum melakukan pengujian endpoint.
-8. Pastikan untuk melakukan konfigurasi Working Directory (Settings > General > Working Directory) untuk pengujian unggah berkas.
+8. Sesuaikan value pada Environment PPOB API. Misal gunakan `http://localhost:3000` sebagai `baseUrl`.
+9. Pastikan untuk melakukan konfigurasi Working Directory (Settings > General > Working Directory) untuk pengujian unggah berkas.
+
+Pengujian dengan Postman ini hanya digunakan ketika program dijalankan di lingkungan `development` (npm run dev).
 
 
