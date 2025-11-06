@@ -94,38 +94,54 @@ Authorization: Bearer <token>
 
 Token akan didapatkan dari endpoint Login.
 
-## Daftar Endpoint
-### Auth
-| Method | Endpoint | Deskripsi |
-|---------|-----------|------------|
-| `POST` | `/registration` | Registrasi pengguna baru |
-| `POST` | `/login` | Login dan mendapatkan JWT token |
+# Daftar Endpoint API
 
-### User
-| Method | Endpoint | Deskripsi |
-|---------|-----------|------------|
-| `GET` | `/profile` | Mendapatkan profil pengguna |
-| `PUT` | `/profile/update` | Mengupdate profil pengguna |
-| `PUT` | `/profile/image` | Upload foto profil (avatar) |
+## Auth
+| Method | Endpoint | Deskripsi | Status |
+|---------|-----------|------------|---------|
+| `POST` | `/registration` | Registrasi pengguna baru | **Public** |
+| `POST` | `/login` | Login dan mendapatkan JWT token | **Public** |
 
-### Transaction
-| Method | Endpoint | Deskripsi |
-|---------|-----------|------------|
-| `GET` | `/balance` | Mendapatkan saldo pengguna |
-| `POST` | `/topup` | Top up saldo pengguna |
-| `POST` | `/transaction` | Melakukan transaksi |
-| `GET` | `/transaction/history?offset=0&limit=3` | Melihat riwayat transaksi (opsional offset dan limit) |
+---
 
-### Service
-| Method | Endpoint | Deskripsi |
-|---------|-----------|------------|
-| `GET` | `/banner` | Mendapatkan daftar banner |
-| `GET` | `/services` | Mendapatkan daftar layanan yang tersedia |
+## User
+| Method | Endpoint | Deskripsi | Status |
+|---------|-----------|------------|---------|
+| `GET` | `/profile` | Mendapatkan profil pengguna | **Private** |
+| `PUT` | `/profile/update` | Mengupdate profil pengguna | **Private** |
+| `PUT` | `/profile/image` | Upload foto profil (avatar) | **Private** |
 
-### ⚠️ Internal (Hanya untuk tahap development)
-| Method | Endpoint | Deskripsi |
-|---------|-----------|------------|
-| `POST` | `/internal/reset` | Membersihkan databases |
+---
+
+## Transaction
+| Method | Endpoint | Deskripsi | Status |
+|---------|-----------|------------|---------|
+| `GET` | `/balance` | Mendapatkan saldo pengguna | **Private** |
+| `POST` | `/topup` | Top up saldo pengguna | **Private** |
+| `POST` | `/transaction` | Melakukan transaksi | **Private** |
+| `GET` | `/transaction/history?offset=0&limit=3` | Melihat riwayat transaksi (opsional offset dan limit) | **Private** |
+
+---
+
+## Service
+| Method | Endpoint | Deskripsi | Status |
+|---------|-----------|------------|---------|
+| `GET` | `/banner` | Mendapatkan daftar banner | **Public** |
+| `GET` | `/services` | Mendapatkan daftar layanan yang tersedia | **Private** |
+
+---
+
+## ⚠️ Internal (Hanya untuk tahap development)
+| Method | Endpoint | Deskripsi | Status |
+|---------|-----------|------------|---------|
+| `POST` | `/internal/reset` | Membersihkan databases | **Internal** — gunakan header `x-internal-secret` |
+
+---
+
+### Catatan
+- **Public** → dapat diakses tanpa autentikasi.  
+- **Private** → membutuhkan header `Authorization: Bearer <JWT_TOKEN>`.  
+- **Internal** → hanya untuk keperluan development, memerlukan header `x-internal-secret`.  
 
 ## Postman Collection dan Enviroment
 Ketika membangun PPBO RESTful API, tentu Anda perlu menguji untuk memastikan API berjalan sesuai dengan kriteria yang ada. Kami sudah menyediakan berkas Postman Collection dan Environment yang dapat Anda gunakan untuk pengujian. Berkasnya kami simpan di dalam folder [`/postman`](https://github.com/nazaralwi/NutechTakeHomeTest/tree/master/postman).
@@ -138,8 +154,10 @@ Ketika membangun PPBO RESTful API, tentu Anda perlu menguji untuk memastikan API
 5. Setelah file berhasil dipilih, klik tombol Import.
 6. Sekarang, PPOB API Test Collection dan PPOB API Environment akan muncul di Postman Anda.
 7. Pastikan untuk mengaktifkan Environment PPOB API sebelum melakukan pengujian endpoint.
+![Activate_PPOB_Env](./readme_assets/Activate_PPOB_Env.png)
 8. Sesuaikan value pada Environment PPOB API. Misal gunakan `http://localhost:3000` sebagai `baseUrl`.
 9. Pastikan untuk melakukan konfigurasi Working Directory (Settings > General > Working Directory) untuk pengujian unggah berkas.
+![Configure_Working_Directory](./readme_assets/Configure_Working_Directory.png)
 
 Pengujian dengan Postman ini hanya digunakan ketika program dijalankan di lingkungan `development` (npm run dev).
 
