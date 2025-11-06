@@ -67,7 +67,7 @@ INTERNAL_KEY=your_internal_api_key # Kunci khusus untuk endpoint internal (misal
 ```
 
 ### 4. Jalankan Migration
-Patikan Anda sudah memasang [PostgreSQL](https://www.postgresql.org/download/) di komputer.
+Patikan Anda sudah memasang [PostgreSQL](https://www.postgresql.org/download/) di komputer Anda.
 
 Jalankan perintah berikut.
 ```
@@ -122,7 +122,7 @@ Token akan didapatkan dari endpoint Login.
 | `GET` | `/banner` | Mendapatkan daftar banner |
 | `GET` | `/services` | Mendapatkan daftar layanan yang tersedia |
 
-### Internal (Hanya untuk tahap development)
+### ⚠️ Internal (Hanya untuk tahap development)
 | Method | Endpoint | Deskripsi |
 |---------|-----------|------------|
 | `POST` | `/internal/reset` | Membersihkan databases |
@@ -143,4 +143,9 @@ Ketika membangun PPBO RESTful API, tentu Anda perlu menguji untuk memastikan API
 
 Pengujian dengan Postman ini hanya digunakan ketika program dijalankan di lingkungan `development` (npm run dev).
 
+## Design Database
+Tabel yang berelasi hanya tabel `users` dan `transactions`.
 
+Sementara untuk table `banner` dan `services` belum diketahui relasinya. Perlu ada diskusi terlebih dahulu.
+
+![PPOB_Database.png](./readme_assets/PPOB_Database.png)
